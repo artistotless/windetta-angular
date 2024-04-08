@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Matches</h4>
+        <p class="card-text">List of ongoing matches</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        @for (item of matches; track $index) {
+        <app-match-item [info]="item" />
+        }
+    </ul>
+</div>

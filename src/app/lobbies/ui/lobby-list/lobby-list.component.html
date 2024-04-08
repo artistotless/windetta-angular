@@ -1,0 +1,11 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Lobbies</h4>
+        <p class="card-text">List of current active lobbies</p>
+    </div>
+    <ul class="list-group list-group-flush">
+        @for (item of lobbies; track $index) {
+        <app-lobby-item [info]="item" />
+        }
+    </ul>
+</div>

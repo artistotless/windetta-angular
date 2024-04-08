@@ -7,7 +7,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, FontAwesomeModule],
-  templateUrl: './app.component.html',
+  template: `<router-outlet />`,
   styles: [],
 })
 export class AppComponent {
