@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Match: {{info?.matchId}}</h4>
+        <p>Bet : {{info?.bet | json}}</p>
+        <p>GameId : {{info?.gameId}}</p>
+        <p>Created : {{info?.created | date:'short'}}</p>
+        <div class="mb-3">
+            <label for="" class="form-label">Players</label>
+            <input type="text" class="form-control form-control-sm" value="{{info?.players | json}}" id=""
+                aria-describedby="helpId" placeholder="" />
+            <small id="helpId" class="form-text text-muted">json</small>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,22 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Lobby: {{info?.id}}</h4>
+        <p>GameId : {{info?.gameId}}</p>
+        <p>Created : {{info?.created | date:'short'}}</p>
+        <p>Updated : {{info?.updated | date:'short'}}</p>
+        <p>State : {{info?.state}}</p>
+        <p>Bet : {{info?.bet | json}}</p>
+        <div class="mb-3">
+            <label for="" class="form-label">Rooms</label>
+            <input type="text" class="form-control form-control-sm" value="{{info?.rooms | json}}" id=""
+                aria-describedby="helpId" placeholder="" />
+            <small id="helpId" class="form-text text-muted">json</small>
+        </div>
+        <div class="mb-3">
+            <label for="" class="form-label">JoinFilters</label>
+            <input type="text" class="form-control form-control-sm" value="{{info?.joinFilters | json}}" id=""
+                aria-describedby="helpId" placeholder="" />
+            <small id="helpId" class="form-text text-muted">json</small>
+        </div>
+    </div>
+</div>
