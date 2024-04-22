@@ -18,9 +18,9 @@ import { RouterLink } from '@angular/router';
 export class HomePage implements OnInit {
 
   public title: string = "Home";
-
+  
   public lobbies: Array<Lobby> = [];
-
+  
   constructor(private _lobbySevice: LobbyService) { }
 
   ngOnInit(): void {

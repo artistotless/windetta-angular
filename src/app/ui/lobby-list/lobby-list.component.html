@@ -3,6 +3,15 @@
         <h4 class="card-title">Lobbies</h4>
         <p class="card-text">List of current active lobbies</p>
     </div>
+
+    <div *ngIf="_identity.currentUser$ | async as user">
+        <p> IsAuthenticated: {{user.isAutheticated}}</p>
+        <p> DisplayName: {{user.displayName}}</p>
+        <p> Email: {{user.email}}</p>
+        <p> Username: {{user.username}}</p>
+    </div>
+    <!-- <p> DisplayName: {{profile.displayName}}</p> -->
+
     <ul class="list-group list-group-flush">
         @for (item of lobbies; track $index) {
         <app-lobby-item [info]="item" />

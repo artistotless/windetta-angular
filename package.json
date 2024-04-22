@@ -2,6 +2,7 @@
   "name": "windetta-angular",
   "version": "0.0.0",
   "scripts": {
+    "clear_build": "ng build --configuration production --output-hashing none --output-path C:\\Projects\\windetta-mvc\\src\\wwwroot\\angular",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -23,14 +24,14 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@microsoft/signalr": "^8.0.0",
     "guid-factory": "^1.2.0",
-    "ngx-signalr-websocket": "^1.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.3.3",
+    "@angular-devkit/build-angular": "^17.0.10",
     "@angular/cli": "^17.3.3",
     "@angular/compiler-cli": "^17.3.0",
     "@types/jasmine": "~5.1.0",

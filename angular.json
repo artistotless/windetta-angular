@@ -72,6 +72,11 @@
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "sslKey": "C:\\BusyBox\\Certs\\cert.key",
+            "sslCert": "C:\\BusyBox\\Certs\\cert.pem",
+            "ssl": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "windetta-angular:build:production"
