@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { from, mergeMap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
@@ -13,7 +13,8 @@ import { RouterLink } from '@angular/router';
   standalone: true,
   imports: [RouterLink, AsyncPipe, NgIf, MatchListComponent, LobbyListComponent],
   templateUrl: './home.page.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomePage implements OnInit {
 

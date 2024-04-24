@@ -2,17 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { Profile } from '../models/profile.model';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { AsyncSubject, Observable, Subject, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class IdentityService {
 
-  private _profile: BehaviorSubject<Profile> = new BehaviorSubject(new Profile());
+  private _profile$: AsyncSubject<Profile> = new AsyncSubject();
   private _initialized: boolean = false;
 
-  currentUser$: Observable<Profile> = this._profile.asObservable();
+  currentUser$: Observable<Profile> = this._profile$.asObservable();
 
   constructor(private _client: HttpClient) {
   }
@@ -24,7 +24,8 @@ export class IdentityService {
       })
         .pipe(tap(value => {
 
-          this._profile.next(value);
+          this._profile$.next(value);
+          this._profile$.complete();
           this._initialized = true;
         }));
     else
@@ -32,6 +33,6 @@ export class IdentityService {
   }
 
   setProfile(newProfile: Profile) {
-    this._profile.next(newProfile);
+    this._profile$.next(newProfile);
   }
 }

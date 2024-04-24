@@ -12,7 +12,7 @@ export const AuthorizeGuard: CanActivateFn = (
   let identityService = inject(IdentityService);
   let currentUrl = `${window.location.origin}${state.url}`;
 
-  return identityService.authenticate().pipe(
+  return identityService.currentUser$.pipe(
     tap(profile => {
       console.log(`CURRENT LOCATION - ${currentUrl}`);
       if (!profile.isAutheticated) {

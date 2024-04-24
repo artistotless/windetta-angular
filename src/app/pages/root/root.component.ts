@@ -1,14 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { IdentityService } from '../../services/identity.service';
-import { Profile } from '../../models/profile.model';
-import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -16,16 +13,23 @@ import { Observable } from 'rxjs';
   imports: [RouterLink, RouterOutlet, FontAwesomeModule, JsonPipe, AsyncPipe],
   templateUrl: './root.component.html',
   styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
 
-  title = 'windetta-angular';
+  title$ = new BehaviorSubject<string>('windetta-angular');
+
+  private authSubscription!: Subscription;
 
   constructor(lib: FaIconLibrary, private _identity: IdentityService) {
     lib.addIcons(faCoffee);
   }
 
   ngOnInit(): void {
-    this._identity.authenticate().subscribe();
+    this.authSubscription = this._identity.authenticate().subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.authSubscription.unsubscribe();
   }
 }

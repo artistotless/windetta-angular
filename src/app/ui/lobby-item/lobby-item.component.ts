@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Lobby } from '../../models/lobby.model';
 import { DatePipe } from '@angular/common';
 import { JsonPipe } from '@angular/common';
@@ -8,7 +8,8 @@ import { JsonPipe } from '@angular/common';
   standalone: true,
   imports: [DatePipe, JsonPipe],
   templateUrl: './lobby-item.component.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbyItemComponent {
   @Input() info: Lobby | undefined;

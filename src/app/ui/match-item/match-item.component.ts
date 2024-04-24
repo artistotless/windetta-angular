@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { OngoingMatch } from '../../models/match-info.model';
 import { JsonPipe, DatePipe } from '@angular/common';
 
@@ -7,7 +7,8 @@ import { JsonPipe, DatePipe } from '@angular/common';
   standalone: true,
   imports: [JsonPipe, DatePipe],
   templateUrl: './match-item.component.html',
-  styles: ``
+  styles: ``,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MatchItemComponent {
   @Input() info: OngoingMatch | undefined

@@ -5,7 +5,7 @@ import { OngoingMatchesListPage } from './pages/ongoing-matches-list/ongoing-mat
 import { AuthorizeGuard } from './services/route-guard.service';
 
 export const routes: Routes = [
-    { path: "", component: HomePage },
-    { path: "matches", component: OngoingMatchesListPage, canActivate: [AuthorizeGuard] },
-    { path: "**", component: NotFoundPage },
+    { path: "", component: HomePage, title: "Windetta | PVP Ton Battles" },
+    { path: "matches", component: OngoingMatchesListPage, canActivate: [AuthorizeGuard], title: "Windetta | Matches" },
+    { path: "**", component: NotFoundPage, title: "404 - NotFound" }
 ];

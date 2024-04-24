@@ -1,5 +1,6 @@
 import { guid } from "guid-factory";
 import { FundsInfo } from "./funds-info.model";
+import { Room } from "./room.model";
 
 export class Lobby {
     readonly id!: guid;
@@ -8,7 +9,7 @@ export class Lobby {
     readonly updated!: Date;
     readonly joinFilters: Array<string> | undefined;
     readonly bet!: FundsInfo;
-    rooms: Array<any> = [];
+    rooms: Room[] = [];
     state: LobbyState = LobbyState.Awaiting;
 }
 
