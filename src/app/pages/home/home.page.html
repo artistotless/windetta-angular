@@ -2,10 +2,12 @@
   <div class="content">
     <div class="row">
       <div class="col-lg">
-        <app-lobby-list [lobbies]="lobbies">Загрузка лобби</app-lobby-list>
+        <!-- <div *ngFor="let post of lobbies$ | async">
+          {{ post.id }}
+        </div> -->
+
+        <app-lobby-list *ngIf="lobbies$ | async as l" [lobbies]="l">Загрузка лобби</app-lobby-list>
       </div>
     </div>
   </div>
 </main>
-
-

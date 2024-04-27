@@ -3,7 +3,6 @@ import { FundsInfo } from "./funds-info.model";
 import { Room } from "./room.model";
 
 export class Lobby {
-    readonly id!: guid;
     readonly gameId!: guid;
     readonly created!: Date;
     readonly updated!: Date;
@@ -11,6 +10,8 @@ export class Lobby {
     readonly bet!: FundsInfo;
     rooms: Room[] = [];
     state: LobbyState = LobbyState.Awaiting;
+
+    constructor(readonly id: string) { }
 }
 
 export enum LobbyState {

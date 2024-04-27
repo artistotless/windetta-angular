@@ -10,8 +10,6 @@
         <p> Email: {{user.email}}</p>
         <p> Username: {{user.username}}</p>
     </div>
-    <!-- <p> DisplayName: {{profile.displayName}}</p> -->
-
     <ul class="list-group list-group-flush">
         @for (item of lobbies; track $index) {
         <app-lobby-item [info]="item" />

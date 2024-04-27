@@ -2,7 +2,6 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Lobby } from '../../models/lobby.model';
 import { LobbyItemComponent } from '../lobby-item/lobby-item.component';
 import { IdentityService } from '../../services/identity.service';
-import { Profile } from '../../models/profile.model';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 
 @Component({
@@ -14,7 +13,7 @@ import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbyListComponent {
-  @Input() lobbies: Array<Lobby> = [];
+  @Input() lobbies: Lobby[] = [];
 
   constructor(public _identity: IdentityService) {
   }

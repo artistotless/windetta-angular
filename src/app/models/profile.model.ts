@@ -1,14 +1,17 @@
+import { guid, Guid } from "guid-factory";
 
 export class Profile {
-    displayName: string | undefined;
-    username: string | undefined;
-    email: string | undefined;
+    id: guid;
+    displayName: string;
+    username: string;
+    email: string;
     isAutheticated!: boolean;
 
-    constructor(){
-        this.displayName = "Loading...",
-        this.email = "Loading...",
-        this.username = "Loading...",
+    constructor() {
+        this.id = Guid.empty();
+        this.displayName = "Loading...";
+        this.email = "Loading...";
+        this.username = "Loading...";
         this.isAutheticated = false;
     }
 }
