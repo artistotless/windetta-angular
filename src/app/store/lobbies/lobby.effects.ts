@@ -4,6 +4,7 @@ import { inject } from "@angular/core";
 import * as LobbyActions from "./lobby.actions";
 import { catchError, exhaustMap, map, of } from "rxjs";
 import { IdentityService } from "../../services/identity.service";
+import { LobbyState } from "../../models/lobby.model";
 
 export const getLobbiesEffect = createEffect(
     (
@@ -52,6 +53,7 @@ export const addMemberEffect = createEffect(
                 )));
 
     }, { functional: true });
+
 
 export const removeMemberEffect = createEffect(
     (

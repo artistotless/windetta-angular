@@ -3,6 +3,7 @@ import * as LobbyActions from "./lobby.actions";
 import { ILobbiesState } from "./lobbies.state";
 import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { Lobby } from "../../models/lobby.model";
+import { produce } from "immer";
 
 export function sortByName(a: Lobby, b: Lobby): number {
     return a.id.localeCompare(b.id);
@@ -19,11 +20,31 @@ const _initialState: ILobbiesState = adapter.getInitialState({
     isCached: false
 })
 
+// export const lobbyReducers = createReducer(_initialState,
+//     on(LobbyActions.failure, (state, action) => ({ ...state, isLoading: false, error: action.error })),
+//     on(LobbyActions.get, (state) => ({ ...state, isLoading: true })),
+//     on(LobbyActions.getSuccess, (state, action) => adapter.addMany(action.lobbies, { ...state, isLoading: false, isCached: true })),
+//     on(LobbyActions.createSuccess, (state, lobby) => adapter.addOne(lobby, state)),
+//     on(LobbyActions.addMemberSuccess, (state, action) => adapter.mapOne({ id: action.lobbyId, map: (l) => ({ ...l, rooms: l.rooms.map((room, index) => { return action.roomIndex == index ? room.addMember(action.member) : room }) }) }, state)),
+//     on(LobbyActions.removeMemberSuccess, (state, action) => adapter.mapOne({ id: action.lobbyId, map: (l) => ({ ...l, rooms: l.rooms.map((room, index) => { return action.roomIndex == index ? room.removeMember(action.memberId) : room }) }) }, state))
+// );
+
 export const lobbyReducers = createReducer(_initialState,
     on(LobbyActions.failure, (state, action) => ({ ...state, isLoading: false, error: action.error })),
     on(LobbyActions.get, (state) => ({ ...state, isLoading: true })),
     on(LobbyActions.getSuccess, (state, action) => adapter.addMany(action.lobbies, { ...state, isLoading: false, isCached: true })),
     on(LobbyActions.createSuccess, (state, lobby) => adapter.addOne(lobby, state)),
-    on(LobbyActions.addMemberSuccess, (state, action) => adapter.mapOne({ id: action.lobbyId, map: (l) => ({ ...l, rooms: l.rooms.map((room, index) => { return action.roomIndex == index ? room.addMember(action.member) : room }) }) }, state)),
-    on(LobbyActions.removeMemberSuccess, (state, action) => adapter.mapOne({ id: action.lobbyId, map: (l) => ({ ...l, rooms: l.rooms.map((room, index) => { return action.roomIndex == index ? room.removeMember(action.memberId) : room }) }) }, state))
+
+    on(LobbyActions.addMemberSuccess, (state, action) => adapter.mapOne({
+        id: action.lobbyId, map: (l) => produce(l, draft => {
+            draft.rooms[action.roomIndex].members.push(action.member);
+        })
+    }, state)),
+
+    on(LobbyActions.removeMemberSuccess, (state, action) => adapter.mapOne({
+        id: action.lobbyId, map: (l) => produce(l, draft => {
+            draft.rooms[action.roomIndex].members = draft.rooms[action.roomIndex].members.filter(v => v.id !== action.memberId);
+        })
+    }, state)),
+
 );
