@@ -45,7 +45,7 @@ export const addMemberEffect = createEffect(
         return _actions$.pipe(
             ofType(LobbyActions.addMember),
             exhaustMap((action) =>
-                _identity.currentUser$.pipe(exhaustMap(profile => _service.joinRoom(action.lobbyId, action.roomIndex).pipe(
+                _identity.user$.pipe(exhaustMap(profile => _service.joinRoom(action.lobbyId, action.roomIndex).pipe(
                     map(() => LobbyActions.addMemberSuccess({ lobbyId: action.lobbyId, member: { id: profile.id, name: profile.displayName }, roomIndex: action.roomIndex })),
                     catchError((error: { message: string }) =>
                         of(LobbyActions.failure({ error: error.message }))
@@ -64,7 +64,7 @@ export const removeMemberEffect = createEffect(
         return _actions$.pipe(
             ofType(LobbyActions.removeMember),
             exhaustMap((action) =>
-                _identity.currentUser$.pipe(exhaustMap(profile => _service.leaveRoom(action.lobbyId, action.roomIndex).pipe(
+                _identity.user$.pipe(exhaustMap(profile => _service.leaveRoom(action.lobbyId, action.roomIndex).pipe(
                     map(() => LobbyActions.removeMemberSuccess({ lobbyId: action.lobbyId, memberId: profile.id, roomIndex: action.roomIndex })),
                     catchError((error: { message: string }) =>
                         of(LobbyActions.failure({ error: error.message }))

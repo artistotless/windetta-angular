@@ -12,7 +12,7 @@ export class IdentityService {
   private _profile$: AsyncSubject<Profile> = new AsyncSubject();
   private _initialized: boolean = false;
 
-  currentUser$: Observable<Profile> = this._profile$.asObservable();
+  user$: Observable<Profile> = this._profile$.asObservable();
 
   constructor(private _client: HttpClient) {
   }
@@ -29,7 +29,7 @@ export class IdentityService {
           this._initialized = true;
         }));
     else
-      return this.currentUser$;
+      return this.user$;
   }
 
   setProfile(newProfile: Profile) {

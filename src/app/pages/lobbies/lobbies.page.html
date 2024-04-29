@@ -1,0 +1,9 @@
+<main class="main">
+    <div class="content">
+      <div class="row">
+        <div class="col-lg">
+            <app-lobby-list *ngIf="lobbies$ | async as l" [lobbies]="l">Загрузка лобби</app-lobby-list>
+        </div>
+      </div>
+    </div>
+  </main>

@@ -1,16 +1,18 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Lobby } from '../../models/lobby.model';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgIf } from '@angular/common';
 import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-lobby-item',
   standalone: true,
-  imports: [DatePipe, JsonPipe],
+  imports: [DatePipe, JsonPipe, NgIf],
   templateUrl: './lobby-item.component.html',
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LobbyItemComponent {
-  @Input() info: Lobby | undefined;
+  @Input() info!: Lobby;
+  @Input() isJoined: boolean = false;
+  @Output() onJoinClick = new EventEmitter<string>();
 }

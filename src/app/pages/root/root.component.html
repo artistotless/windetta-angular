@@ -8,17 +8,20 @@
                 <a [routerLink]="['/']" class="nav-link active" href="#" aria-current="page">Home <span
                         class="visually-hidden">(current)</span></a>
             </li>
-                <li class="nav-item">
-                    <a [routerLink]="['matches']" class="nav-link" href="#">Matches</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownId">
-                        <a class="dropdown-item" href="#">Action 1</a>
-                        <a class="dropdown-item" href="#">Action 2</a>
-                    </div>
-                </li>
+            <li class="nav-item">
+                <a [routerLink]="['lobbies']" class="nav-link" href="#">Lobbies</a>
+            </li>
+            <li class="nav-item">
+                <a [routerLink]="['matches']" class="nav-link" href="#">Matches</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdownId" data-bs-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                <div class="dropdown-menu" aria-labelledby="dropdownId">
+                    <a class="dropdown-item" href="#">Action 1</a>
+                    <a class="dropdown-item" href="#">Action 2</a>
+                </div>
+            </li>
         </ul>
         <form class="d-flex my-2 my-lg-0">
             <input class="form-control me-sm-2" type="text" placeholder="Search" />

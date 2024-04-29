@@ -5,7 +5,7 @@ import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { IdentityService } from '../../services/identity.service';
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -17,7 +17,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  title$ = new BehaviorSubject<string>('windetta-angular');
+  title = "Windetta";
 
   private authSubscription!: Subscription;
 

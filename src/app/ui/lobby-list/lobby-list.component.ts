@@ -17,4 +17,8 @@ export class LobbyListComponent {
 
   constructor(public _identity: IdentityService) {
   }
+
+  public onJoinLobby(lobbyId: string) {
+    console.log(lobbyId);
+  }
 }

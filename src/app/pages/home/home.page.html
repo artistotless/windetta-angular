@@ -2,7 +2,7 @@
   <div class="content">
     <div class="row">
       <div class="col-lg">
-        <app-lobby-list *ngIf="lobbies$ | async as l" [lobbies]="l">Загрузка лобби</app-lobby-list>
+        <app-profile-item *ngIf="identity.user$| async as u" [user]="u">Загрузка профиля</app-profile-item>
       </div>
     </div>
   </div>

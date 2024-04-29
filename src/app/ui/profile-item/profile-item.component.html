@@ -1,0 +1,13 @@
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Profile</h4>
+        <p class="card-text">Information about me</p>
+    </div>
+
+    <div *ngIf="user">
+        <p> IsAuthenticated: {{user.isAutheticated}}</p>
+        <p> DisplayName: {{user.displayName}}</p>
+        <p> Email: {{user.email}}</p>
+        <p> Username: {{user.username}}</p>
+    </div>
+</div>
