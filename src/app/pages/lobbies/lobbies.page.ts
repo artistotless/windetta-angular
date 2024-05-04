@@ -28,6 +28,7 @@ export class LobbiesPage implements OnInit, OnDestroy {
     this._getSubscription = this._store
       .select(Selectors.isCached)
       .subscribe(isCached => {
+        this._store.dispatch(Actions.getCurrent())
         if (isCached === false)
           this._store.dispatch(Actions.get());
       });
