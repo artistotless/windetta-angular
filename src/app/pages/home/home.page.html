@@ -2,7 +2,7 @@
   <div class="content">
     <div class="row">
       <div class="col-lg">
-        <app-profile-item *ngIf="identity.user$| async as u" [user]="u">Загрузка профиля</app-profile-item>
+        <app-profile-item *ngIf="profile$ | async as u" [user]="u">Загрузка профиля</app-profile-item>
       </div>
     </div>
   </div>
