@@ -15,6 +15,7 @@ export const adapter: EntityAdapter<Lobby> = createEntityAdapter<Lobby>({
 });
 
 const _initialState: ILobbiesState = adapter.getInitialState({
+    currentLobby: undefined,
     isLoading: false,
     error: null,
     isCached: false
@@ -22,6 +23,9 @@ const _initialState: ILobbiesState = adapter.getInitialState({
 
 export const lobbyReducers = createReducer(_initialState,
     on(LobbyActions.failure, (state, action) => ({ ...state, isLoading: false, error: action.error })),
+    on(LobbyActions.getCurrent, (state) => ({ ...state, currentLobby: undefined })),
+    on(LobbyActions.getCurrentSuccess, (state, currentLobby) => ({ ...state, currentLobby: currentLobby })),
+    on(LobbyActions.getCurrentFailure, (state) => ({ ...state, currentLobby: null })),
     on(LobbyActions.get, (state) => ({ ...state, isLoading: true })),
     on(LobbyActions.getSuccess, (state, action) => adapter.addMany(action.lobbies, { ...state, isLoading: false, isCached: true })),
     on(LobbyActions.createSuccess, (state, lobby) => adapter.addOne(lobby, state)),
