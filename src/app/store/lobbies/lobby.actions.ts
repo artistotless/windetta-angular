@@ -4,15 +4,20 @@ import { CreateLobbyDto } from "../../models/lobby-create-dto.model";
 import { LeaveLobbyDto } from "../../models/lobby-leave-dto.model";
 import { JoinLobbyDto } from "../../models/lobby-join.dto.models";
 import { RoomMember } from "../../models/room-member.model";
+import { UserLobbyMapEntry } from "../../models/user-lobby-map-entry";
 
 export const failure = createAction("[Lobbies] Failure", props<{ error: string }>());
 
 export const get = createAction("[Lobbies] Get");
 export const getSuccess = createAction("[Lobbies] Get success", props<{ lobbies: Lobby[] }>());
 
-export const create = createAction("[Lobbies] Create", props<CreateLobbyDto>());
-export const createSuccess = createAction("[Lobbies] Create success", props<Lobby>());
+export const getCurrent = createAction("[Lobbies] Get current user lobby");
+export const getCurrentSuccess = createAction("[Lobbies] Get current user lobby: success", props<UserLobbyMapEntry>());
+export const getCurrentFailure = createAction("[Lobbies] Get current user lobby: failure");
 
+export const create = createAction("[Lobbies] Create", props<CreateLobbyDto>());
+
+export const createSuccess = createAction("[Lobbies] Create success", props<Lobby>());
 export const remove = createAction("[Lobbies] Remove lobby", props<{ lobbyId: string }>());
 
 export const removeMember = createAction("[Lobbies] Remove member", props<LeaveLobbyDto>());
