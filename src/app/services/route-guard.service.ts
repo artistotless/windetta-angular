@@ -1,26 +1,25 @@
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { IdentityService } from './identity.service';
-import { map, tap } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { filter, map } from 'rxjs';
+import * as Selectors from '../store/profile/profile.selectors';
+import { IAppStore } from '../app.store';
+import { Store } from '@ngrx/store';
+
 
 export const AuthorizeGuard: CanActivateFn = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot,
 ) => {
 
-  let identityService = inject(IdentityService);
+  let _store = inject(Store<IAppStore>);
+  let _router = inject(Router);
   let currentUrl = `${window.location.origin}${state.url}`;
 
-  return identityService.user$.pipe(
-    tap(profile => {
-      if (!profile.isAutheticated) {
-        console.log(profile);
-        window.location.href = `${environment.mvcUrl}/login?returnUrl=${currentUrl}`
-      }
-    }),
-
-    map(x => x.isAutheticated)
+  return _store.select(Selectors.profile).pipe(
+    filter(profile => profile !== undefined),
+    map(profile => {
+      console.log(`profile : ${profile}`)
+      return profile !== null ? true : _router.parseUrl(`/login?returnUrl=${currentUrl}`);
+    })
   )
 };
-
