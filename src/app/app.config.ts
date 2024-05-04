@@ -6,8 +6,10 @@ import { provideHttpClient, withFetch } from '@angular/common/http';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
 import * as lobbyEffects from '../app/store/lobbies/lobby.effects';
+import * as profileEffects from '../app/store/profile/profile.effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
-import {lobbyReducers} from './store/lobbies/lobbies.reducer';
+import { lobbyReducers } from './store/lobbies/lobbies.reducer';
+import { profileReducers } from './store/profile/profile.reducer';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +17,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideStore(),
     provideState({ name: "lobby", reducer: lobbyReducers }),
-    provideEffects([lobbyEffects]),
+    provideState({ name: "profile", reducer: profileReducers }),
+    provideEffects([lobbyEffects, profileEffects]),
     provideStoreDevtools({
       maxAge: 25, // Retains last 25 states
       logOnly: !isDevMode(), // Restrict extension to log-only mode
