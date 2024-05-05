@@ -13,8 +13,6 @@ export class IdentityService {
   }
 
   authenticate(): Observable<IProfile> {
-    return this._client.get<IProfile>(`${environment.mvcUrl}/profile`, {
-      withCredentials: true
-    });
+    return this._client.get<IProfile>(`${environment.mvcUrl}/profile`);
   }
 }

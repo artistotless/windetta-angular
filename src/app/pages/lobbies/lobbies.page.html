@@ -1,9 +1,16 @@
 <main class="main">
-    <div class="content">
-      <div class="row">
-        <div class="col-lg">
-            <app-lobby-list *ngIf="lobbies$ | async as l" [lobbies]="l">Загрузка лобби</app-lobby-list>
-        </div>
+  <div class="content">
+    <div class="row">
+      <div class="col-lg">
+        <app-lobby-create (onCreateLobby)="createLobby($event)"
+          [games]="[{id:'b15739de-8d5b-4759-a20c-75389b14ecb8', title:'SeaBattle'},{id:'a3c505a6-bb06-4a02-980e-5d2d2b82640c', title:'Poker'}]">Загрузка
+          формы</app-lobby-create>
+      </div>
+      <div class="col-lg">
+        <app-lobby-list (onJoinLobby)="joinLobby($event)" *ngIf="lobbies$ | async as l" [lobbies]="l"
+          [currentLobby]="(currentLobby$ | async)!">Загрузка
+          лобби</app-lobby-list>
       </div>
     </div>
-  </main>
+  </div>
+</main>

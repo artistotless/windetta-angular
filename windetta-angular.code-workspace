@@ -2,6 +2,12 @@
 	"folders": [
 		{
 			"path": "."
+		},
+		{
+			"path": "node_modules/bulma"
+		},
+		{
+			"path": "src/app"
 		}
 	],
 	"settings": {}

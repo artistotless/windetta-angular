@@ -3,20 +3,21 @@ import { environment } from '../../../environments/environment';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-login',
+  selector: 'app-logout',
   standalone: true,
   imports: [],
   template: '',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LoginPage implements OnInit {
+export class LogoutPage implements OnInit {
 
   constructor(private _route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     let returnUrl = this._route.snapshot.queryParams["returnUrl"];
-    window.location.href = `${environment.mvcUrl}/login?returnUrl=${returnUrl}`
+    console.log("Successfully loged out");
+    window.location.href = `${environment.mvcUrl}/logout?returnUrl=${returnUrl}`
   }
 }

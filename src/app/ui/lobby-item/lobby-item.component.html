@@ -20,7 +20,7 @@
             <small id="helpId" class="form-text text-muted">json</small>
         </div>
 
-        <button (click)="onJoinClick.emit(info.id)" type="button" class="btn btn-primary">
+        <button *ngIf="!isJoined" (click)="onJoinClick.emit(info.id)" type="button" class="btn btn-primary">
             Join
         </button>
 

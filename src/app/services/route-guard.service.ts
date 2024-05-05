@@ -18,7 +18,6 @@ export const AuthorizeGuard: CanActivateFn = (
   return _store.select(Selectors.profile).pipe(
     filter(profile => profile !== undefined),
     map(profile => {
-      console.log(`profile : ${profile}`)
       return profile !== null ? true : _router.parseUrl(`/login?returnUrl=${currentUrl}`);
     })
   )

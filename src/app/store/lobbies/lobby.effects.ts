@@ -2,7 +2,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { LobbyService } from "../../services/lobby.service";
 import { inject } from "@angular/core";
 import * as LobbyActions from "./lobby.actions";
-import { catchError, exhaustMap, map, of } from "rxjs";
+import { catchError, exhaustMap, filter, map, of } from "rxjs";
 import { IAppStore } from "../../app.store";
 import { Store } from "@ngrx/store";
 import { profile } from "../profile/profile.selectors";
@@ -16,11 +16,13 @@ export const getCurrentLobbyEffect = createEffect(
         return _actions$.pipe(
             ofType(LobbyActions.getCurrent),
             exhaustMap(() =>
-                _store.select(profile).pipe(exhaustMap(profile => _service.getUserLobby(profile.id).pipe(
-                    map((currentLobby) => LobbyActions.getCurrentSuccess(currentLobby)),
-                    catchError(() =>
-                        of(LobbyActions.getCurrentFailure())
-                    )))
+                _store.select(profile).pipe(filter(profile => profile !== undefined), exhaustMap(profile => {
+                    return _service.getUserLobby(profile.id).pipe(
+                        map((currentLobby) => LobbyActions.getCurrentSuccess(currentLobby)),
+                        catchError(() =>
+                            of(LobbyActions.getCurrentFailure())
+                        ))
+                })
                 )));
     }, { functional: true });
 

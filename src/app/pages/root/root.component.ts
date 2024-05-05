@@ -4,25 +4,25 @@ import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontaweso
 import { faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { RouterLink } from '@angular/router';
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { Subscription } from 'rxjs';
 import { IAppStore } from '../../app.store';
 import { Store } from '@ngrx/store';
 import * as Actions from '../../store/profile/profile.actions'
+import { NavbarComponent } from '../../ui/navbar/navbar.component';
+import { Observable } from 'rxjs';
+import { isAuthenticated } from '../../store/profile/profile.selectors';
 
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterLink, RouterOutlet, FontAwesomeModule, JsonPipe, AsyncPipe],
+  imports: [NavbarComponent, RouterLink, RouterOutlet, FontAwesomeModule, JsonPipe, AsyncPipe],
   templateUrl: './root.component.html',
   styles: [],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class AppComponent implements OnInit, OnDestroy {
+export class AppComponent implements OnInit {
 
   title = "Windetta";
-
-  private _authSubscription!: Subscription;
 
   constructor(private _lib: FaIconLibrary, private _store: Store<IAppStore>) {
     this._lib.addIcons(faCoffee);
@@ -32,7 +32,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this._store.dispatch(Actions.get());
   }
 
-  ngOnDestroy(): void {
-    this._authSubscription.unsubscribe();
+  public isAuthenticated(): Observable<boolean> {
+    return this._store.select(isAuthenticated);
   }
 }

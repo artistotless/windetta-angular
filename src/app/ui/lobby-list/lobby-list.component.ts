@@ -1,8 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Lobby } from '../../models/lobby.model';
 import { LobbyItemComponent } from '../lobby-item/lobby-item.component';
-import { IdentityService } from '../../services/identity.service';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
+import { UserLobbyMapEntry } from '../../models/user-lobby-map-entry';
 
 @Component({
   selector: 'app-lobby-list',
@@ -14,11 +14,11 @@ import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 })
 export class LobbyListComponent {
   @Input() lobbies: Lobby[] = [];
+  @Input() currentLobby!: UserLobbyMapEntry;
+  @Output() onJoinLobby = new EventEmitter<string>();
 
-  constructor(public _identity: IdentityService) {
-  }
-
-  public onJoinLobby(lobbyId: string) {
-    console.log(lobbyId);
+  public onJoinClick(lobbyId: string) {
+    console.log('LobbyListComponent: onJoinClick');
+    this.onJoinLobby.emit(lobbyId);
   }
 }

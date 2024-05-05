@@ -13,6 +13,6 @@ import { JsonPipe } from '@angular/common';
 })
 export class LobbyItemComponent {
   @Input() info!: Lobby;
-  @Input() isJoined: boolean = false;
+  @Input() isJoined!: boolean;
   @Output() onJoinClick = new EventEmitter<string>();
 }
