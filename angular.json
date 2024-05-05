@@ -8,7 +8,8 @@
       "schematics": {
         "@schematics/angular:component": {
           "inlineStyle": true,
-          "skipTests": true
+          "skipTests": true,
+          "style": "scss"
         },
         "@schematics/angular:service": {
           "skipTests": true
@@ -25,6 +26,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/windetta-angular",
+            "inlineStyleLanguage": "scss",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -36,7 +38,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -94,19 +96,20 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-devkit/build-angular:karma",       
           "options": {
             "polyfills": [
               "zone.js",
               "zone.js/testing"
             ],
+            "inlineStyleLanguage": "scss",
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
