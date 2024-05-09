@@ -1,9 +1,11 @@
 <div class="block">
     <p class="card-text">List of current active lobbies:</p>
 </div>
-<ul class="list-group list-group-flush">
+<ul>
     @for (item of lobbies; track $index) {
-    <app-lobby-item (onJoinClick)="onJoinClick($event)" (onLeaveClick)="onLeaveClick($event)"
-        [isJoined]="currentLobby.lobbyId === item.id" [info]="item" />
+    <div class="block">
+        <app-lobby-item (onJoinClick)="onJoinClick($event)" (onLeaveClick)="onLeaveClick($event)"
+            [isJoined]="currentLobby.lobbyId === item.id" [info]="item" />
+    </div>
     }
 </ul>
