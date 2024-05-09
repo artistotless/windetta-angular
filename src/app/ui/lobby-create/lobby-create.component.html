@@ -1,24 +1,48 @@
 <form (submit)="onCreateLobbyClick()">
-    
-    <select #currencySelector [(ngModel)]="createLobbyModel.bet.currencyId" name="currencyId"
-        class="form-select form-select-lg" id="">
-        <option selected value="1">TON</option>
-        <option value="2">WNDT</option>
-    </select>
 
-    <span class="input-group-text">{{getSelectedCurrencyText(currencySelector)}}</span>
-    <input #a [(ngModel)]="createLobbyModel.bet.amount" name="amount" type="text" class="form-control"
-        aria-label="Amount (to the nearest dollar)">
-    
-        <select [(ngModel)]="createLobbyModel.gameId" name="gameId" class="form-select form-select-lg" id="">
-        <option value='' selected>Select the game</option>
-        <option *ngFor="let item of games" value="{{item.id}}">{{item.title}}</option>
-    </select>
+    <div class="field has-addons">
+        <div class="control">
+            <div class="select is-rounded">
+                <select #currencySelector [(ngModel)]="createLobbyModel.bet.currencyId" name="currencyId"
+                    class="form-select form-select-lg">
+                    <option selected value="1">TON</option>
+                    <option value="2">WNDT</option>
+                </select>
+            </div>
+        </div>
+        <div class="control">
+            <div class="field">
+                <p class="control">
+                    <input [(ngModel)]="createLobbyModel.bet.amount" name="amount" class="input" placeholder="Amount">
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="field is-grouped">
+        <div class="control">
+            <div class="select is-rounded">
+                <select [(ngModel)]="createLobbyModel.gameId" name="gameId">
+                    <option value='' selected>Select the game</option>
+                    <option *ngFor="let item of games" value="{{item.id}}">{{item.title}}</option>
+                </select>
+            </div>
+        </div>
 
-    <input [(ngModel)]="createLobbyModel.private" name="private" class="form-check-input" type="checkbox" value=""
-        id="" />
+        <div class="control is-align-content-center">
+            <label class="checkbox">
+                <input [(ngModel)]="createLobbyModel.private" name="private" type="checkbox" />
+                Private
+            </label>
+        </div>
 
-    <button type="submit" class="button">
-        Create
-    </button>
+    </div>
+    <div class="field">
+        <div class="container">
+            <div class="control">
+                <button type="submit" class="button is-success is-fullwidth is-outlined">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
 </form>

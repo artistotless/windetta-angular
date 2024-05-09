@@ -1,5 +1,5 @@
 
 export class LeaveLobbyDto {
-    readonly roomIndex!: number;
-    readonly lobbyId!: string;
+    roomIndex!: number;
+    lobbyId!: string;
 }

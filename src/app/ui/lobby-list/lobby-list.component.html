@@ -1,13 +1,9 @@
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Lobbies </h4>
-        <p class="card-text">List of current active lobbies</p>
-    </div>
-    <ul class="list-group list-group-flush">
-
-        @for (item of lobbies; track $index) {
-        <app-lobby-item (onJoinClick)="onJoinClick($event)" [isJoined]="currentLobby.LobbyId === item.id"
-            [info]="item" />
-        }
-    </ul>
+<div class="block">
+    <p class="card-text">List of current active lobbies:</p>
 </div>
+<ul class="list-group list-group-flush">
+    @for (item of lobbies; track $index) {
+    <app-lobby-item (onJoinClick)="onJoinClick($event)" (onLeaveClick)="onLeaveClick($event)"
+        [isJoined]="currentLobby.lobbyId === item.id" [info]="item" />
+    }
+</ul>

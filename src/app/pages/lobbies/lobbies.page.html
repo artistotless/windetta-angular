@@ -1,16 +1,33 @@
-<main class="main">
-  <div class="content">
-    <div class="row">
-      <div class="col-lg">
-        <app-lobby-create (onCreateLobby)="createLobby($event)"
-          [games]="[{id:'b15739de-8d5b-4759-a20c-75389b14ecb8', title:'SeaBattle'},{id:'a3c505a6-bb06-4a02-980e-5d2d2b82640c', title:'Poker'}]">Загрузка
-          формы</app-lobby-create>
+<div class="columns is-widescreen">
+  <div class="column is-two-fifths">
+    <div class="columns">
+      <div class="column">
+        <section class="section">
+          <h1 class="title">Create your own</h1>
+          <div class="block">
+            <h6 class="subtitle is-6">
+              Any user can create a Lobby, specifying the game they want to play and the bets involved. Another user
+              can
+              join,
+              and the game will begin.
+            </h6>
+          </div>
+          <app-lobby-create (onCreateLobby)="createLobby($event)"
+            [games]="[{id:'b15739de-8d5b-4759-a20c-75389b14ecb8', title:'SeaBattle'},{id:'a3c505a6-bb06-4a02-980e-5d2d2b82640c', title:'Poker'}]">Загрузка
+            формы</app-lobby-create>
+        </section>
       </div>
-      <div class="col-lg">
-        <app-lobby-list (onJoinLobby)="joinLobby($event)" *ngIf="lobbies$ | async as l" [lobbies]="l"
-          [currentLobby]="(currentLobby$ | async)!">Загрузка
-          лобби</app-lobby-list>
+      <div class="is-align-content-center">
+        <h5 class="title is-5">OR</h5>
       </div>
     </div>
   </div>
-</main>
+  <div class="column ">
+    <section class="section">
+      <h1 class="title">Join the existing lobby</h1>
+      <app-lobby-list (onLeaveLobby)="leaveLobby($event)" (onJoinLobby)="joinLobby($event)"
+        *ngIf="lobbies$ | async as l" [lobbies]="l" [currentLobby]="(currentLobby$ | async)!">Загрузка
+        лобби</app-lobby-list>
+    </section>
+  </div>
+</div>

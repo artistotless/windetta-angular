@@ -1,4 +1,4 @@
 export class FundsInfo {
-    readonly currencyId!: number;
-    readonly amount!: number;
+    currencyId!: number;
+    amount!: number;
 }

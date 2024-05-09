@@ -1,6 +1,9 @@
 import { NgIf } from '@angular/common';
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { IProfile } from '../../models/profile.model';
+import { sha256 } from 'js-sha256';
+
 
 @Component({
   selector: 'app-navbar',
@@ -10,7 +13,11 @@ import { RouterLink } from '@angular/router';
   styles: ``
 })
 export class NavbarComponent {
-  @Input() isAuthenticated: boolean = false;
+  @Input() profile: IProfile | null = null;
+
+  get isAuthenticated(): boolean {
+    return this.profile !== undefined && this.profile !== null;
+  }
 
   @ViewChild("nav_burger") navBurger: ElementRef | undefined;
   @ViewChild("nav_menu") navMenu: ElementRef | undefined;
@@ -22,5 +29,9 @@ export class NavbarComponent {
 
   get currentUrl() {
     return window.location.href;
+  }
+
+  get imageHash(): string | null {
+    return this.profile === null ? null : sha256(this.profile.email);
   }
 }

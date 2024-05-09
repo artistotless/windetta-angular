@@ -21,18 +21,23 @@ import { CreateLobbyDto } from '../../models/lobby-create-dto.model';
 export class LobbiesPage implements OnInit, OnDestroy {
 
   public lobbies$: Observable<Lobby[]>;
-  public currentLobby$: Observable<UserLobbyMapEntry | undefined>;
+  public currentLobby$: Observable<UserLobbyMapEntry>;
 
   private _getSub?: Subscription;
 
   constructor(private _store: Store<IAppStore>) {
     this.lobbies$ = _store.pipe(select(Selectors.allLobbies));
-    this.currentLobby$ = _store.select(Selectors.currentUserLobby).pipe(filter(l => l !== undefined));
+    this.currentLobby$ = _store.pipe(select(Selectors.currentUserLobby));
   }
 
   public joinLobby(lobbyId: string) {
     console.log('LobbiesPage: joinLobby');
     this._store.dispatch(Actions.addMember({ lobbyId, roomIndex: 0 }));
+  }
+
+  public leaveLobby(lobbyId: string) {
+    console.log('LobbiesPage: leaveLobby');
+    this._store.dispatch(Actions.removeMember({ lobbyId, roomIndex: 0 }));
   }
 
   public createLobby(params: CreateLobbyDto) {

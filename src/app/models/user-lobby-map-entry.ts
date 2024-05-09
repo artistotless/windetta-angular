@@ -1,6 +1,5 @@
 
 export class UserLobbyMapEntry {
-    public UserId!: string;
-    public LobbyId!: string;
-    public RoomIndex!: number;
+    public lobbyId!: string;
+    public roomIndex!: number;
 }

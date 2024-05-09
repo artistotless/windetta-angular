@@ -5,8 +5,8 @@ export class Lobby {
     
     readonly id!: string;
     readonly gameId!: string;
-    readonly created!: Date;
-    readonly updated!: Date;
+    readonly createdAt!: Date;
+    readonly updatedAt!: Date;
     readonly joinFilters?: Array<string>;
     readonly bet!: FundsInfo;
     rooms: Room[] = [];

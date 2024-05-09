@@ -15,15 +15,21 @@ export class LobbyCreateComponent {
   @Input() games: { id: string, title: string }[] = [];
   @Output() onCreateLobby = new EventEmitter<CreateLobbyDto>();
 
-  createLobbyModel: CreateLobbyDto = {
+  createLobbyModel = {
     bet: { currencyId: 1, amount: 0 },
     private: false,
     gameId: ""
   };
 
   public onCreateLobbyClick() {
-    console.log(this.createLobbyModel);
-    this.onCreateLobby.emit(this.createLobbyModel);
+    this.onCreateLobby.emit({
+      bet: {
+        amount: this.createLobbyModel.bet.amount,
+        currencyId: this.createLobbyModel.bet.currencyId
+      },
+      gameId: this.createLobbyModel.gameId,
+      private: this.createLobbyModel.private
+    });
   }
 
   public getSelectedCurrencyText(selector: HTMLSelectElement): string {

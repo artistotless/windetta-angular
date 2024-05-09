@@ -30,6 +30,6 @@ export class LobbyService {
   }
 
   leaveRoom(lobbyId: string, roomIndex: number): Observable<any> {
-    return this._client.post(`${environment.apiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`, null)
+    return this._client.delete(`${environment.apiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`)
   }
 }

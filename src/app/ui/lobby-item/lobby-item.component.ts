@@ -15,4 +15,5 @@ export class LobbyItemComponent {
   @Input() info!: Lobby;
   @Input() isJoined!: boolean;
   @Output() onJoinClick = new EventEmitter<string>();
+  @Output() onLeaveClick = new EventEmitter<string>();
 }

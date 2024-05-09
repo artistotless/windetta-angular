@@ -1,2 +1,5 @@
-<app-navbar [isAuthenticated]="(isAuthenticated() | async)!" />
-<router-outlet />
+<app-navbar [profile]="getProfile() | async" />
+<div class="container is-fullhd py-4">
+    <router-outlet />
+</div>
+<app-footer />
