@@ -3,6 +3,7 @@ import { MatchService } from '../../services/match.service';
 import { OngoingMatch } from '../../models/match-info.model';
 import { from, mergeMap } from 'rxjs';
 import { MatchListComponent } from "../../ui/match-list/match-list.component";
+import { MainHubRealtimeService } from '../../services/main-hub-realtime.service';
 
 @Component({
     selector: 'app-ongoing-matches-list',
@@ -19,6 +20,7 @@ export class OngoingMatchesListPage implements OnInit {
   constructor(private _matchService: MatchService) { }
 
   ngOnInit(): void {
+
     this._matchService.getOngoingMatchesIds().pipe(
       mergeMap(ids => from(ids).pipe(mergeMap(id => this._matchService.getOngoingMatchInfo(id))))
     ).subscribe((match) => this.matches.push(match));

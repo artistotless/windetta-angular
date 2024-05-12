@@ -16,8 +16,8 @@ export const getCurrentLobbyEffect = createEffect(
         return _actions$.pipe(
             ofType(LobbyActions.getCurrent),
             exhaustMap(() =>
-                _store.select(profile).pipe(filter(profile => profile !== undefined), exhaustMap(profile => {
-                    return _service.getUserLobby(profile.id).pipe(
+                _store.select(profile).pipe(filter(profile => profile !== undefined && profile !== null), exhaustMap(profile => {
+                    return _service.getUserLobby(profile!.id).pipe(
                         map((currentLobby) => LobbyActions.getCurrentSuccess(currentLobby)),
                         catchError(() =>
                             of(LobbyActions.getCurrentFailure())

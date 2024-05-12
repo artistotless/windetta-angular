@@ -4,9 +4,25 @@
         <p class="subtitle">Information about me</p>
     </div>
 
-    <div>
+    @switch (user) {
+    @case (undefined) {
+    <div class="block">
+        <p class="is-skeleton"> DisplayName:</p>
+        <p class="is-skeleton"> Email: </p>
+        <p class="is-skeleton"> Username</p>
+    </div>
+    }
+    @case (null) {
+    <div class="block">
+        <p>Not authorized</p>
+    </div>
+    }
+    @default {
+    <div class="block">
         <p> DisplayName: {{user.displayName}}</p>
         <p> Email: {{user.email}}</p>
         <p> Username: {{user.username}}</p>
     </div>
+    }
+    }
 </section>

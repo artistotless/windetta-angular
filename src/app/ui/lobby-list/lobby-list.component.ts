@@ -1,16 +1,17 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { Lobby } from '../../models/lobby.model';
 import { LobbyItemComponent } from '../lobby-item/lobby-item.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { UserLobbyMapEntry } from '../../models/user-lobby-map-entry';
+import { LobbyItemPlaceholderComponent } from "../lobby-item-placeholder/lobby-item-placeholder.component";
 
 @Component({
   selector: 'app-lobby-list',
   standalone: true,
-  imports: [LobbyItemComponent, AsyncPipe, JsonPipe, NgIf],
   templateUrl: './lobby-list.component.html',
   styles: ``,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [LobbyItemComponent, AsyncPipe, JsonPipe, NgIf, LobbyItemPlaceholderComponent]
 })
 export class LobbyListComponent {
 

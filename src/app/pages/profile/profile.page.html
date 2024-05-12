@@ -1,3 +1,3 @@
 <div class="content">
-  <app-profile-item *ngIf="profile$ | async as u" [user]="u">Загрузка профиля</app-profile-item>
+  <app-profile-item [user]="profile$ | async">Загрузка профиля</app-profile-item>
 </div>

@@ -25,9 +25,9 @@
   <div class="column ">
     <section class="section">
       <h1 class="title">Join the existing lobby</h1>
-      <app-lobby-list (onLeaveLobby)="leaveLobby($event)" (onJoinLobby)="joinLobby($event)"
-        *ngIf="lobbies$ | async as l" [lobbies]="l" [currentLobby]="(currentLobby$ | async)!">Загрузка
-        лобби</app-lobby-list>
+      <app-lobby-list (onLeaveLobby)="leaveLobby($event)" (onJoinLobby)="joinLobby($event)" [lobbies]="(lobbies$ | async)!"
+        [currentLobby]="(currentLobby$ | async)!" />
+
     </section>
   </div>
 </div>

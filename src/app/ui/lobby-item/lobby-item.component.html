@@ -1,50 +1,75 @@
 <div class="box">
-    <div class="field">
-        <div class="block">
-            <label class="label">Lobby ID</label>
-            <p>{{info.id}}</p>
-        </div>
-        <div class="block">
-            <label class="label">Game ID</label>
-            <p>{{info.gameId}}</p>
-        </div>
-        <div class="field is-grouped is-horizontal ">
-            <div class="control">
-                <label class="label">Created</label>
+    <div class="field is-horizontal">
+        <label class="label">Lobby ID</label>
+        <input class="input" type="text" value="{{info.id}}" disabled />
+    </div>
+    <div class="field is-horizontal">
+        <label class="label">Game ID</label>
+        <input class="input" type="text" value="{{info.gameId}}" disabled />
+    </div>
+    <div class="p-4 is-background-dark level is-horizontal is-mobile is-rounded">
+        <div class="level-item">
+            <div>
+                <p class="label">Created</p>
                 <p>{{info.createdAt | date:'short'}}</p>
             </div>
-            <div class="control">
-                <label class="label">Updated</label>
+        </div>
+        <div class="level-item  ">
+            <div>
+                <p class="label">Updated</p>
                 <p>{{info.updatedAt | date:'short'}}</p>
             </div>
         </div>
-        <div class="block">
-            <label class="label">State</label>
-            <p>{{info.state}}</p>
+        <div class="level-item">
+            <div>
+                <p class="label">State</p>
+                <p>{{info.state}}</p>
+            </div>
+        </div>
+        <div class="level-item ">
+            <div>
+                <p class="label">Bet</p>
+                <p>{{info.bet.amount}}</p>
+            </div>
         </div>
     </div>
-
-    <div class="field is-horizontal is-grouped ">
-        <label class="label is-align-content-center">Bet</label>
-        <input class="input" type="text" value="{{info.bet.amount}}" disabled />
-    </div>
-
-    <div class="columns">
-        <div class="column">
-            <label class="label">Rooms</label>
-            <textarea class="textarea" placeholder="...">{{info.rooms | json}}</textarea>
+    <div class="block">
+        <div class="columns is-horizontal is-mobile">
+            <div class="column has-text-centered">
+                <strong>Team A (1/1)</strong>
+            </div>
+            <div class="column is-narrow has-text-centered">
+                vs
+            </div>
+            <div class="column  has-text-centered">
+            <strong> Team B (0/1)</strong>
+            </div>
         </div>
-        <div class="column">
-            <label class="label">JoinFilters</label>
-            <textarea class="textarea" placeholder="...">{{info.joinFilters | json}}</textarea>
+        <div class="fixed-grid has-2-cols">
+            <div class="grid">
+                @if(!isJoined){
+                <div class="button is-64x64 is-rounded is-background-dark">
+                    Join
+                </div>
+                <div class="button is-128x128 is-rounded is-background-dark">
+                    Join
+                </div>
+                }@else {
+                <div disabled class="button is-64x64 is-rounded is-background-dark">
+                    Join
+                </div>
+                <div disabled class="button is-128x128 is-rounded is-background-dark">
+                    Join
+                </div>
+                }
+            </div>
         </div>
     </div>
-    <div class="buttons">
-        <button *ngIf="!isJoined" (click)="onJoinClick.emit(info.id)" type="button" class="button is-light">
-            Join
-        </button>
-        <button *ngIf="isJoined" (click)="onLeaveClick.emit(info.id)" type="button" class="button">
-            Leave
-        </button>
-    </div>
+    <!-- <div class="field">
+        <label class="label ">JoinFilters</label>
+        <textarea class="textarea" placeholder="...">{{info.joinFilters | json}}</textarea>
+    </div> -->
+    <button *ngIf="isJoined" (click)="onLeaveClick.emit(info.id)" type="button" class="button is-fullwidth">
+        Leave
+    </button>
 </div>

@@ -1,6 +1,8 @@
 <div class="block">
     <p class="card-text">List of current active lobbies:</p>
 </div>
+
+@if(lobbies){
 <ul>
     @for (item of lobbies; track $index) {
     <div class="block">
@@ -9,3 +11,6 @@
     </div>
     }
 </ul>
+}@else {
+<app-lobby-item-placeholder />
+}

@@ -13,7 +13,7 @@ import { sha256 } from 'js-sha256';
   styles: ``
 })
 export class NavbarComponent {
-  @Input() profile: IProfile | null = null;
+  @Input() profile: IProfile | null | undefined;
 
   get isAuthenticated(): boolean {
     return this.profile !== undefined && this.profile !== null;
@@ -32,6 +32,6 @@ export class NavbarComponent {
   }
 
   get imageHash(): string | null {
-    return this.profile === null ? null : sha256(this.profile.email);
+    return this.profile === null || this.profile === undefined ? null : sha256(this.profile.email);
   }
 }

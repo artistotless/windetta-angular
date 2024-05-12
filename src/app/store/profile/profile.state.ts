@@ -1,7 +1,7 @@
 import { IProfile } from "../../models/profile.model";
 
 export interface IProfileState {
-    profile: IProfile | null | undefined;
+    profile: IProfile | undefined | null;
     isLoading: boolean;
     error: string | null;
 }

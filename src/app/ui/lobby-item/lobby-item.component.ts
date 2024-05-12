@@ -11,7 +11,7 @@ import { JsonPipe } from '@angular/common';
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LobbyItemComponent {
+export class LobbyItemComponent{
   @Input() info!: Lobby;
   @Input() isJoined!: boolean;
   @Output() onJoinClick = new EventEmitter<string>();

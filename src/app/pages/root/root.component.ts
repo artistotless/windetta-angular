@@ -12,29 +12,40 @@ import { Observable } from 'rxjs';
 import { profile } from '../../store/profile/profile.selectors';
 import { IProfile } from '../../models/profile.model';
 import { FooterComponent } from "../../ui/footer/footer.component";
+import { MainHubRealtimeService } from '../../services/main-hub-realtime.service';
 
 
 @Component({
-    selector: 'app-root',
-    standalone: true,
-    templateUrl: './root.component.html',
-    styles: [],
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    imports: [NavbarComponent, RouterLink, RouterOutlet, FontAwesomeModule, JsonPipe, AsyncPipe, FooterComponent]
+  selector: 'app-root',
+  standalone: true,
+  templateUrl: './root.component.html',
+  styles: [],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    NavbarComponent,
+    RouterLink,
+    RouterOutlet,
+    FontAwesomeModule,
+    JsonPipe,
+    AsyncPipe,
+    FooterComponent,
+  ]
 })
 export class AppComponent implements OnInit {
 
   title = "Windetta";
 
-  constructor(private _lib: FaIconLibrary, private _store: Store<IAppStore>) {
+  constructor(private _lib: FaIconLibrary, private _store: Store<IAppStore>, private _hub: MainHubRealtimeService) {
     this._lib.addIcons(faCoffee);
   }
 
   ngOnInit(): void {
+    this._hub.start();
+    this._hub.lobbyEvents.subscribe(event => console.log(event));
     this._store.dispatch(Actions.get());
   }
 
-  public getProfile(): Observable<IProfile> {
+  public getProfile(): Observable<IProfile | undefined | null> {
     return this._store.select(profile);
   }
 }
