@@ -1,1 +1,1 @@
-  <app-match-list [matches]=" matches">Загрузка текущих матчей</app-match-list>
+<app-match-list [matches]=" matches$ | async">Загрузка текущих матчей</app-match-list>

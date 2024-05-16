@@ -1,8 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatchService } from '../../services/match.service';
-import { concatMap, Observable, tap } from 'rxjs';
-import { OngoingMatch } from '../../models/ongoing-match.model';
+import { catchError, concatMap, finalize, Observable, of, tap } from 'rxjs';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
 
 @Component({
@@ -14,31 +13,34 @@ import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class OngoingMatchPage {
-  matchInfo$: Observable<OngoingMatch>
+  matchInfo$: Observable<any>
 
   constructor(
     private _route: ActivatedRoute,
     private _match: MatchService) {
 
     let matchId = this._route.snapshot.params["id"];
-
-    this.matchInfo$ = _match.getTicket(matchId).pipe(
-      concatMap(ticket => {
-        return this._match.getOngoingMatchInfo(matchId).pipe(tap(
-          match => {
+    
+    this.matchInfo$ = this._match.getOngoingMatchInfo(matchId).pipe(
+      concatMap(match => {
+        let ticketValue: string | undefined = undefined;
+        return this._match.getTicket(matchId).pipe(
+          tap(
+            ticket => { ticketValue = ticket; }
+          ),
+          finalize(() => {
+            // saves intermidiate data in sessionStorage
             sessionStorage.setItem("cached_match", JSON.stringify({
               gs_endpoint: match.gameServerEndpoint,
               matchId: match.matchId,
               players: match.players,
               created: match.created,
               bet: match.bet,
-              ticket: ticket
+              ticket: ticketValue
             }));
-
-            // redirect to game page
+            // redirects to game page
             window.location.href = `/game/client?game=${match.gameId}&match=${match.matchId}`;
-          }
-        ))
+          }))
       })
     );
   }

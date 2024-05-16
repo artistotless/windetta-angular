@@ -1,13 +1,18 @@
 
 const apiUrl = "https://localhost:7084/api";
 
-const cached_match_value = JSON.parse(sessionStorage.getItem("cached_match"));
+let cached_match_value = JSON.parse(sessionStorage.getItem("cached_match"));
 
-const gs_endpoint = cached_match_value.gs_endpoint;
-const ticket = cached_match_value.ticket;
+sessionStorage.clear();
 
-const matchID = getUrlParam('match');
-const gameID = getUrlParam('game');
+let matchID = getUrlParam('match');
+
+if (cached_match_value === null | undefined)
+    window.location.replace(`/matches/${matchID}`);
+
+let gameID = getUrlParam('game');
+let gs_endpoint = cached_match_value.gs_endpoint;
+let ticket = cached_match_value.ticket;
 
 function getUrlParam(key) {
     return new URLSearchParams(window.location.search).get(key);

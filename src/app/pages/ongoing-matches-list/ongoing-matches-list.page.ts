@@ -1,28 +1,22 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatchService } from '../../services/match.service';
-import { OngoingMatch } from '../../models/ongoing-match.model';
-import { from, mergeMap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { MatchListComponent } from "../../ui/match-list/match-list.component";
-import { MainHubRealtimeService } from '../../services/main-hub-realtime.service';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
-    selector: 'app-ongoing-matches-list',
-    standalone: true,
-    templateUrl: './ongoing-matches-list.page.html',
-    styles: ``,
-    imports: [MatchListComponent],
-    changeDetection: ChangeDetectionStrategy.OnPush
+  selector: 'app-ongoing-matches-list',
+  standalone: true,
+  templateUrl: './ongoing-matches-list.page.html',
+  styles: ``,
+  imports: [MatchListComponent, AsyncPipe],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class OngoingMatchesListPage implements OnInit {
+export class OngoingMatchesListPage {
 
-  public matches: Array<OngoingMatch> = [];
+  public matches$: Observable<string[]>;
 
-  constructor(private _matchService: MatchService) { }
-
-  ngOnInit(): void {
-
-    this._matchService.getOngoingMatchesIds().pipe(
-      mergeMap(ids => from(ids).pipe(mergeMap(id => this._matchService.getOngoingMatchInfo(id))))
-    ).subscribe((match) => this.matches.push(match));
+  constructor(private _matchService: MatchService) {
+    this.matches$ = this._matchService.getOngoingMatchesIds();
   }
 }

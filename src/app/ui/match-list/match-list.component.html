@@ -4,10 +4,10 @@
         <h6 class="subtitle is-6">
             List of ongoing matches
         </h6>
-      </div>
+    </div>
     <ul class="list-group list-group-flush">
-        @for (match of matches; track $index) {
-        <app-match-item [info]="match" />
+        @for ( match of matches; track $index) {
+        <a [routerLink]="['/matches', match]"> {{match}} </a>
         }
     </ul>
 </section>
