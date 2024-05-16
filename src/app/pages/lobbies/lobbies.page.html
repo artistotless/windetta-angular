@@ -27,7 +27,6 @@
       <h1 class="title">Join the existing lobby</h1>
       <app-lobby-list (onLeaveLobby)="leaveLobby($event)" (onJoinLobby)="joinLobby($event)" [lobbies]="(lobbies$ | async)!"
         [currentLobby]="(currentLobby$ | async)!" />
-
     </section>
   </div>
 </div>

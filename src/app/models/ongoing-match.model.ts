@@ -7,4 +7,5 @@ export class OngoingMatch {
     players!: Player[];
     bet!: FundsInfo;
     created!: Date;
+    gameServerEndpoint!: string
 }

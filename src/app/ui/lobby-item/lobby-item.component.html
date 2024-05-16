@@ -42,16 +42,16 @@
                 vs
             </div>
             <div class="column  has-text-centered">
-            <strong> Team B (0/1)</strong>
+                <strong> Team B (0/1)</strong>
             </div>
         </div>
         <div class="fixed-grid has-2-cols">
             <div class="grid">
                 @if(!isJoined){
-                <div class="button is-64x64 is-rounded is-background-dark">
+                <div (click)="onJoinClick.emit(info.id)" class="button is-64x64 is-rounded is-background-dark">
                     Join
                 </div>
-                <div class="button is-128x128 is-rounded is-background-dark">
+                <div (click)="onJoinClick.emit(info.id)" class="button is-128x128 is-rounded is-background-dark">
                     Join
                 </div>
                 }@else {

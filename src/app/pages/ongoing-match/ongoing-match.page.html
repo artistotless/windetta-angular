@@ -1,1 +1,14 @@
-<p>ongoing-match works!</p>
+<section class="section">
+    <div *ngIf="matchInfo$ | async as m; else notfound" class="block">
+        <hr />
+        GameId : {{m.gameId}}
+        <hr />
+        Bet : {{m.bet.amount}} TON
+        <hr />
+        Created : {{m.created | date:'short'}}
+        <hr />
+    </div>
+    <ng-template #notfound class="block">
+        No match with passed ID
+    </ng-template>
+</section>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { OngoingMatch } from '../models/match-info.model';
+import { OngoingMatch } from '../models/ongoing-match.model';
 import { environment } from '../../environments/environment.development';
 
 @Injectable({
@@ -21,5 +21,9 @@ export class MatchService {
 
   getOngoingMatchInfo(matchId: string): Observable<OngoingMatch> {
     return this._client.get<OngoingMatch>(`${environment.apiUrl}/matches/ongoing/${matchId}`)
+  }
+
+  getTicket(matchId: string): Observable<string> {
+    return this._client.get<string>(`${environment.apiUrl}/matches/${matchId}/ticket`)
   }
 }

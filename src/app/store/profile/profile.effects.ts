@@ -13,7 +13,7 @@ export const getProfileEffect = createEffect(
             ofType(ProfileActions.get),
             exhaustMap(() =>
                 _service.authenticate().pipe(
-                    map((profile) => ProfileActions.getSuccess({ profile })),
+                    map((profile) => ProfileActions.getSuccess({profile })),
                     catchError((error: { message: string }) =>
                         of(ProfileActions.getFailure({ error: error.message }))
                     ))));

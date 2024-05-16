@@ -7,17 +7,22 @@ import {
     HttpResponse
 } from '@angular/common/http';
 
-import { catchError, finalize, Observable, tap, throwError } from 'rxjs';
+import { catchError, finalize, map, Observable, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { toast } from 'bulma-toast'
 import { environment } from '../../environments/environment';
+import { BaseResponse } from '../models/base-response.model';
+
+function isBaseResponse(response: BaseResponse<any> | unknown): response is BaseResponse<any> {
+    return (<BaseResponse<any>>response).success !== undefined && (<BaseResponse<any>>response).error !== undefined;
+}
 
 export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
 
     let router = inject(Router);
     const started = Date.now();
     let responseType: string;
-    let error: { code: string, msg: string } | null;
+    let error: string | null;
 
     req = req.clone({
         withCredentials: true
@@ -33,17 +38,16 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
             error: (_error) => {
                 responseType = "failed";
                 if (_error instanceof HttpErrorResponse)
-                    error = { code: _error.error.errorCode, msg: _error.error.message }
+                    error = _error.error
             }
         }),
         // Log when response observable either completes or errors
         finalize(() => {
             if (environment.enableHttpToasts) {
                 const elapsed = Date.now() - started;
-                const errorCode = error?.code !== undefined ? `\n ErrorCode: ${error.code}` : '';
-                const errorMessage = error?.msg !== undefined ? `\n ErrorMessage: ${error.msg}` : '';
+                const errorMessage = error !== undefined ? `\n ErrorMessage: ${error}` : '';
                 const msg = `${req.method} "${req.urlWithParams}"
-               ${responseType} in ${elapsed} ms. ${errorCode || errorMessage ? '\n' : ''} ${errorCode} ${errorMessage}`;
+               ${responseType} in ${elapsed} ms. ${errorMessage ? '\n' : ''} ${errorMessage}`;
 
                 const type = responseType === "failed" ? "is-danger" : "is-success";
                 toast({ message: msg, position: "bottom-left", duration: 3000, type: type, pauseOnHover: true, extraClasses: "is-dark" })
@@ -55,5 +59,14 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
                 router.navigateByUrl(`/login?returnUrl=${currentUrl}`);
             }
             return throwError(() => error);
-        }));
+        }),
+        map(event => {
+            if (event instanceof HttpResponse) {
+                if (isBaseResponse(event.body)) {
+                    event = event.clone({ body: event.body.data });
+                }
+            }
+            return event;
+        }),
+    );
 }

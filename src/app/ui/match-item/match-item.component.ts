@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { OngoingMatch } from '../../models/match-info.model';
+import { OngoingMatch } from '../../models/ongoing-match.model';
 import { JsonPipe, DatePipe } from '@angular/common';
 
 @Component({

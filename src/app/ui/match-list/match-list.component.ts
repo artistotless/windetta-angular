@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { OngoingMatch } from '../../models/match-info.model';
+import { OngoingMatch } from '../../models/ongoing-match.model';
 import { MatchItemComponent } from "../match-item/match-item.component";
 import { NgIf } from '@angular/common';
 

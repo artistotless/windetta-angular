@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatchService } from '../../services/match.service';
-import { OngoingMatch } from '../../models/match-info.model';
+import { OngoingMatch } from '../../models/ongoing-match.model';
 import { from, mergeMap } from 'rxjs';
 import { MatchListComponent } from "../../ui/match-list/match-list.component";
 import { MainHubRealtimeService } from '../../services/main-hub-realtime.service';
