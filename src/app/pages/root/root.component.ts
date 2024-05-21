@@ -53,6 +53,10 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(event => this.handleMatchEvent(event));
   }
 
+  public testSend(){
+    this._hub.testSend();
+  }
+
   ngOnInit(): void {
     this._hub.start();
     this._store.dispatch(Actions.get());

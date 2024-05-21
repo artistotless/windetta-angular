@@ -4,6 +4,10 @@ import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Lobby } from '../models/lobby.model';
+import { IAppStore } from '../app.store';
+import { Store } from '@ngrx/store';
+import * as LobbyActions from '../store/lobbies/lobby.actions'
+import { HttpTransportType } from '@microsoft/signalr';
 
 export type HubEvent = { type: HubEventType, data?: any }
 
@@ -22,29 +26,42 @@ export const enum HubEventType {
   providedIn: 'root'
 })
 export class MainHubRealtimeService {
-
   public lobbyEvents: Subject<HubEvent> = new Subject();
   public matchEvents: Subject<HubEvent> = new Subject();
 
   private _connection: SignalR.HubConnection;
 
-  constructor(private _client: HttpClient) {
+  constructor(private _client: HttpClient, private _store: Store<IAppStore>) {
 
     let options: SignalR.IHttpConnectionOptions = {
       accessTokenFactory: () => this.getRealtimeToken(),
-      withCredentials: false
+      transport: HttpTransportType.WebSockets,
+      withCredentials: false,
+      skipNegotiation: true
     };
     this._connection = new SignalR.HubConnectionBuilder()
       .withUrl(environment.mainHubUrl, options)
       .configureLogging(SignalR.LogLevel.Information)
       .build();
 
+    this.subscribeOnMirror();
     this.subscribeOnLobbyEvents();
     this.subscribeOnMatchEvents();
   }
 
+  public testSend() {
+    console.log('testSend')
+    this._connection.send("TestMethod");
+  }
+
   start() {
     this._connection?.start().catch(err => console.error(err.toString()));
+  }
+
+  private subscribeOnMirror() {
+    this._connection.on("mirror", (arg: { method: string, data: any }) => {
+      this._connection.send(arg.method, arg.data);
+    });
   }
 
   private subscribeOnLobbyEvents() {
@@ -53,6 +70,7 @@ export class MainHubRealtimeService {
     });
 
     this._connection.on(HubEventType.DeletedLobby, (lobbyId: string) => {
+      this._store.dispatch(LobbyActions.remove({ lobbyId: lobbyId }))
       this.lobbyEvents.next({ type: HubEventType.DeletedLobby, data: lobbyId });
     });
 

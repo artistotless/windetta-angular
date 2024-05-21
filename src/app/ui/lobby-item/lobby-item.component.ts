@@ -2,6 +2,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 import { Lobby } from '../../models/lobby.model';
 import { DatePipe, NgIf } from '@angular/common';
 import { JsonPipe } from '@angular/common';
+import { LeaveLobbyDto } from '../../models/lobby-leave-dto.model';
+import { JoinLobbyDto } from '../../models/lobby-join.dto.models';
 
 @Component({
   selector: 'app-lobby-item',
@@ -11,9 +13,9 @@ import { JsonPipe } from '@angular/common';
   styles: ``,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LobbyItemComponent{
+export class LobbyItemComponent {
   @Input() info!: Lobby;
   @Input() isJoined!: boolean;
-  @Output() onJoinClick = new EventEmitter<string>();
-  @Output() onLeaveClick = new EventEmitter<string>();
+  @Output() onJoinClick = new EventEmitter<JoinLobbyDto>();
+  @Output() onLeaveClick = new EventEmitter<LeaveLobbyDto>();
 }

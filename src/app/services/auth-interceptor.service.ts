@@ -14,6 +14,7 @@ import { environment } from '../../environments/environment';
 import { BaseResponse } from '../models/base-response.model';
 
 function isBaseResponse(response: BaseResponse<any> | unknown): response is BaseResponse<any> {
+    console.log(response);
     return (<BaseResponse<any>>response).success !== undefined && (<BaseResponse<any>>response).error !== undefined;
 }
 
@@ -62,6 +63,8 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
         }),
         map(event => {
             if (event instanceof HttpResponse) {
+                if (event.status === 204)
+                    return event;
                 if (isBaseResponse(event.body)) {
                     event = event.clone({ body: event.body.data });
                 }

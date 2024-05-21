@@ -10,6 +10,8 @@ import { LobbyListComponent } from '../../ui/lobby-list/lobby-list.component';
 import { UserLobbyMapEntry } from '../../models/user-lobby-map-entry';
 import { LobbyCreateComponent } from '../../ui/lobby-create/lobby-create.component';
 import { CreateLobbyDto } from '../../models/lobby-create-dto.model';
+import { LeaveLobbyDto } from '../../models/lobby-leave-dto.model';
+import { JoinLobbyDto } from '../../models/lobby-join.dto.models';
 
 @Component({
   selector: 'app-lobbies',
@@ -31,14 +33,15 @@ export class LobbiesPage implements OnInit, OnDestroy {
     this.currentLobby$ = _store.pipe(select(Selectors.currentUserLobby));
   }
 
-  public joinLobby(lobbyId: string) {
+  public joinLobby(params: JoinLobbyDto) {
     console.log('LobbiesPage: joinLobby');
-    this._store.dispatch(Actions.addMember({ lobbyId, roomIndex: 0 }));
+    this._store.dispatch(Actions.addMember(params));
   }
 
-  public leaveLobby(lobbyId: string) {
+  public leaveLobby(params: LeaveLobbyDto) {
+    console.log(params);
     console.log('LobbiesPage: leaveLobby');
-    this._store.dispatch(Actions.removeMember({ lobbyId, roomIndex: 0 }));
+    this._store.dispatch(Actions.removeMember(params));
   }
 
   public createLobby(params: CreateLobbyDto) {

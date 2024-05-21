@@ -2,7 +2,7 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { LobbyService } from "../../services/lobby.service";
 import { inject } from "@angular/core";
 import * as LobbyActions from "./lobby.actions";
-import { catchError, exhaustMap, filter, map, of, switchMap, tap } from "rxjs";
+import { catchError, exhaustMap, filter, map, of, switchMap } from "rxjs";
 import { IAppStore } from "../../app.store";
 import { Store } from "@ngrx/store";
 import { profile } from "../profile/profile.selectors";
@@ -48,7 +48,7 @@ export const createLobbyEffect = createEffect(
 
         return _actions$.pipe(
             ofType(LobbyActions.create),
-            exhaustMap((createDto) =>
+            switchMap((createDto) =>
                 _service.createLobby(createDto).pipe(
                     switchMap((lobby) => of(
                         LobbyActions.getCurrentSuccess({
@@ -70,7 +70,7 @@ export const addMemberEffect = createEffect(
 
         return _actions$.pipe(
             ofType(LobbyActions.addMember),
-            exhaustMap((action) =>
+            switchMap((action) =>
                 _store.select(profile).pipe(filter(profile => profile !== undefined), exhaustMap(profile =>
                     _service.joinRoom(action.lobbyId, action.roomIndex).pipe(
                         switchMap(() => of(
@@ -94,7 +94,7 @@ export const removeMemberEffect = createEffect(
 
         return _actions$.pipe(
             ofType(LobbyActions.removeMember),
-            exhaustMap((action) =>
+            switchMap((action) =>
                 _store.select(profile).pipe(exhaustMap(profile => _service.leaveRoom(action.lobbyId, action.roomIndex).pipe(
                     map(() => LobbyActions.removeMemberSuccess({ lobbyId: action.lobbyId, memberId: profile!.id, roomIndex: action.roomIndex })),
                     catchError((error: { message: string }) =>

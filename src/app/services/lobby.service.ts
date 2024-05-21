@@ -30,6 +30,7 @@ export class LobbyService {
   }
 
   leaveRoom(lobbyId: string, roomIndex: number): Observable<any> {
+    console.log("LOBBYSERVICE leaveRoom")
     return this._client.delete(`${environment.apiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`)
   }
 }

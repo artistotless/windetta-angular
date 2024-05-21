@@ -4,6 +4,8 @@ import { LobbyItemComponent } from '../lobby-item/lobby-item.component';
 import { AsyncPipe, JsonPipe, NgIf } from '@angular/common';
 import { UserLobbyMapEntry } from '../../models/user-lobby-map-entry';
 import { LobbyItemPlaceholderComponent } from "../lobby-item-placeholder/lobby-item-placeholder.component";
+import { LeaveLobbyDto } from '../../models/lobby-leave-dto.model';
+import { JoinLobbyDto } from '../../models/lobby-join.dto.models';
 
 @Component({
   selector: 'app-lobby-list',
@@ -17,16 +19,16 @@ export class LobbyListComponent {
 
   @Input() lobbies: Lobby[] = [];
   @Input() currentLobby!: UserLobbyMapEntry;
-  @Output() onJoinLobby = new EventEmitter<string>();
-  @Output() onLeaveLobby = new EventEmitter<string>();
+  @Output() onJoinLobby = new EventEmitter<JoinLobbyDto>();
+  @Output() onLeaveLobby = new EventEmitter<LeaveLobbyDto>();
 
-  public onJoinClick(lobbyId: string) {
+  public onJoinClick(event: JoinLobbyDto) {
     console.log('LobbyListComponent: onJoinClick');
-    this.onJoinLobby.emit(lobbyId);
+    this.onJoinLobby.emit(event);
   }
 
-  public onLeaveClick(lobbyId: string) {
+  public onLeaveClick(event: LeaveLobbyDto) {
     console.log('LobbyListComponent: onLeaveClick');
-    this.onLeaveLobby.emit(lobbyId);
+    this.onLeaveLobby.emit(event);
   }
 }

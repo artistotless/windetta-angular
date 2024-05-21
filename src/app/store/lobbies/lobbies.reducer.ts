@@ -29,6 +29,8 @@ export const lobbyReducers = createReducer(_initialState,
     on(LobbyActions.getSuccess, (state, action) => adapter.addMany(action.lobbies, { ...state, isLoading: false, isCached: true })),
     on(LobbyActions.createSuccess, (state, lobby) => adapter.addOne(lobby, state)),
 
+    on(LobbyActions.remove, (state, action) => adapter.removeOne(action.lobbyId, state)),
+
     on(LobbyActions.addMemberSuccess, (state, action) => adapter.mapOne({
         id: action.lobbyId, map: (l) => produce(l, draft => {
             draft.rooms[action.roomIndex].members.push(action.member);

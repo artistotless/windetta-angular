@@ -35,41 +35,36 @@
     </div>
     <div class="block">
         <div class="columns is-horizontal is-mobile">
+            @for (item of info.rooms; track $index) {
             <div class="column has-text-centered">
-                <strong>Team A (1/1)</strong>
+                <strong>Team {{item.index}}
+                    ({{info.rooms[item.index].members.length}}/{{info.rooms[item.index].maxMembers}})</strong>
             </div>
-            <div class="column is-narrow has-text-centered">
-                vs
-            </div>
-            <div class="column  has-text-centered">
-                <strong> Team B (0/1)</strong>
-            </div>
+            @if(info.rooms.length < $index){ <div class="column is-narrow has-text-centered"> vs
         </div>
-        <div class="fixed-grid has-2-cols">
-            <div class="grid">
+        }
+        }
+    </div>
+    <div class="block">
+        <div class="columns is-horizontal is-mobile">
+            @for (item of info.rooms; track $index) {
+            <div class="column has-text-centered">
                 @if(!isJoined){
-                <div (click)="onJoinClick.emit(info.id)" class="button is-64x64 is-rounded is-background-dark">
-                    Join
-                </div>
-                <div (click)="onJoinClick.emit(info.id)" class="button is-128x128 is-rounded is-background-dark">
-                    Join
-                </div>
-                }@else {
-                <div disabled class="button is-64x64 is-rounded is-background-dark">
-                    Join
-                </div>
-                <div disabled class="button is-128x128 is-rounded is-background-dark">
+                <div (click)="onJoinClick.emit({lobbyId:info.id, roomIndex:item.index})"
+                    class="button is-64x64 is-rounded is-background-dark">
                     Join
                 </div>
                 }
             </div>
+            }
         </div>
     </div>
     <!-- <div class="field">
         <label class="label ">JoinFilters</label>
         <textarea class="textarea" placeholder="...">{{info.joinFilters | json}}</textarea>
     </div> -->
-    <button *ngIf="isJoined" (click)="onLeaveClick.emit(info.id)" type="button" class="button is-fullwidth">
+    <button #leave *ngIf="isJoined" (click)="onLeaveClick.emit({lobbyId:info.id, roomIndex:0})"
+        (click)="leave.classList.toggle('is-loading')" type="button" class="button is-fullwidth">
         Leave
     </button>
 </div>
