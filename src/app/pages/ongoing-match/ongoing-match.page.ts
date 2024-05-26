@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MatchService } from '../../services/match.service';
-import { catchError, concatMap, finalize, Observable, of, tap } from 'rxjs';
+import { concatMap, finalize, Observable, tap } from 'rxjs';
 import { AsyncPipe, DatePipe, NgIf } from '@angular/common';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-ongoing-match',
@@ -17,14 +18,15 @@ export class OngoingMatchPage {
 
   constructor(
     private _route: ActivatedRoute,
+    private _token: TokenService,
     private _match: MatchService) {
 
     let matchId = this._route.snapshot.params["id"];
-    
+
     this.matchInfo$ = this._match.getOngoingMatchInfo(matchId).pipe(
       concatMap(match => {
         let ticketValue: string | undefined = undefined;
-        return this._match.getTicket(matchId).pipe(
+        return this._token.getRealtimeToken().pipe(
           tap(
             ticket => { ticketValue = ticket; }
           ),

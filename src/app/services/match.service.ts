@@ -22,8 +22,4 @@ export class MatchService {
   getOngoingMatchInfo(matchId: string): Observable<OngoingMatch> {
     return this._client.get<OngoingMatch>(`${environment.apiUrl}/matches/ongoing/${matchId}`)
   }
-
-  getTicket(matchId: string): Observable<string> {
-    return this._client.get<string>(`${environment.apiUrl}/matches/${matchId}/ticket`)
-  }
 }

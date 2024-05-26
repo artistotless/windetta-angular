@@ -6,7 +6,8 @@ import { RouterLink } from '@angular/router';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { IAppStore } from '../../app.store';
 import { Store } from '@ngrx/store';
-import * as Actions from '../../store/profile/profile.actions';
+import * as ProfileActions from '../../store/profile/profile.actions';
+import * as LobbyActions from '../../store/lobbies/lobby.actions';
 import { NavbarComponent } from '../../ui/navbar/navbar.component';
 import { Observable, Subscription } from 'rxjs';
 import { profile } from '../../store/profile/profile.selectors';
@@ -53,13 +54,9 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe(event => this.handleMatchEvent(event));
   }
 
-  public testSend(){
-    this._hub.testSend();
-  }
-
   ngOnInit(): void {
     this._hub.start();
-    this._store.dispatch(Actions.get());
+    this._store.dispatch(ProfileActions.get());
   }
 
   ngOnDestroy(): void {
@@ -72,7 +69,23 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private handleLobbyEvent(event: HubEvent) {
-    console.log(event);
+    switch (event.type) {
+      case HubEventType.AddedLobby:
+        this._store.dispatch(LobbyActions.add(event.data))
+        break;
+      case HubEventType.DeletedLobby:
+        this._store.dispatch(LobbyActions.remove({ lobbyId: event.data }))
+        break;
+      case HubEventType.UpdatedLobby:
+        this._store.dispatch(LobbyActions.update(event.data))
+        break;
+        case HubEventType.ReadyLobby:
+          this._store.dispatch(LobbyActions.update(event.data))
+          break;
+      default:
+        console.log(event);
+        break;
+    }
   }
 
   private handleMatchEvent(event: HubEvent) {
@@ -80,7 +93,6 @@ export class AppComponent implements OnInit, OnDestroy {
       case HubEventType.ReadyToConnect:
         this._router.navigateByUrl(`matches/${event.data}`)
         break;
-
       default:
         console.log(event);
         break;

@@ -8,6 +8,7 @@ import { IAppStore } from '../app.store';
 import { Store } from '@ngrx/store';
 import * as LobbyActions from '../store/lobbies/lobby.actions'
 import { HttpTransportType } from '@microsoft/signalr';
+import { TokenService } from './token.service';
 
 export type HubEvent = { type: HubEventType, data?: any }
 
@@ -31,10 +32,10 @@ export class MainHubRealtimeService {
 
   private _connection: SignalR.HubConnection;
 
-  constructor(private _client: HttpClient, private _store: Store<IAppStore>) {
+  constructor(private _token: TokenService, private _store: Store<IAppStore>) {
 
     let options: SignalR.IHttpConnectionOptions = {
-      accessTokenFactory: () => this.getRealtimeToken(),
+      accessTokenFactory: () => this._token.getRealtimeTokenPromise(),
       transport: HttpTransportType.WebSockets,
       withCredentials: false,
       skipNegotiation: true
@@ -49,11 +50,6 @@ export class MainHubRealtimeService {
     this.subscribeOnMatchEvents();
   }
 
-  public testSend() {
-    console.log('testSend')
-    this._connection.send("TestMethod");
-  }
-
   start() {
     this._connection?.start().catch(err => console.error(err.toString()));
   }
@@ -65,8 +61,8 @@ export class MainHubRealtimeService {
   }
 
   private subscribeOnLobbyEvents() {
-    this._connection.on(HubEventType.AddedLobby, (lobbyId: string) => {
-      this.lobbyEvents.next({ type: HubEventType.AddedLobby, data: lobbyId });
+    this._connection.on(HubEventType.AddedLobby, (lobby: Lobby) => {
+      this.lobbyEvents.next({ type: HubEventType.AddedLobby, data: lobby });
     });
 
     this._connection.on(HubEventType.DeletedLobby, (lobbyId: string) => {
@@ -99,17 +95,5 @@ export class MainHubRealtimeService {
     this._connection.on(HubEventType.AwaitingExpired, () => {
       this.matchEvents.next({ type: HubEventType.AwaitingExpired });
     });
-  }
-
-  private getRealtimeToken(): Promise<string> {
-    let client = this._client;
-
-    return <Promise<string>>new Promise(function (resolve, reject) {
-
-      client.get<string>(`${environment.mvcUrl}/tokens/realtime`).subscribe(
-        result => resolve(result),
-        error => reject(error),
-      );
-    })
   }
 }

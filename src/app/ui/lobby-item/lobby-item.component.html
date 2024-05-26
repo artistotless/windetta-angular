@@ -49,7 +49,7 @@
         <div class="columns is-horizontal is-mobile">
             @for (item of info.rooms; track $index) {
             <div class="column has-text-centered">
-                @if(!isJoined){
+                @if(!isJoined && item.members.length !== item.maxMembers){
                 <div (click)="onJoinClick.emit({lobbyId:info.id, roomIndex:item.index})"
                     class="button is-64x64 is-rounded is-background-dark">
                     Join

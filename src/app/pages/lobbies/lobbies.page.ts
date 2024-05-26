@@ -12,6 +12,7 @@ import { LobbyCreateComponent } from '../../ui/lobby-create/lobby-create.compone
 import { CreateLobbyDto } from '../../models/lobby-create-dto.model';
 import { LeaveLobbyDto } from '../../models/lobby-leave-dto.model';
 import { JoinLobbyDto } from '../../models/lobby-join.dto.models';
+import { MainHubRealtimeService } from '../../services/main-hub-realtime.service';
 
 @Component({
   selector: 'app-lobbies',
