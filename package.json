@@ -24,7 +24,7 @@
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
     "@fortawesome/free-regular-svg-icons": "^6.4.2",
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
-    "@microsoft/signalr": "^8.0.0",
+    "@microsoft/signalr": "7.0.0",
     "@ngrx/effects": "^17.2.0",
     "@ngrx/entity": "^17.2.0",
     "@ngrx/store": "^17.2.0",
