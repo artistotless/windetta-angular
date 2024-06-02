@@ -5,6 +5,7 @@ export const environment = {
     apiUrl: "https://spa-proxy.feed78.com/api",
     mvcUrl: "https://spa-proxy.feed78.com",
     mainHubUrl: "https://main.feed78.com/mainHub",
+
     enableHttpToasts: false,
     testLobbies: [
         {

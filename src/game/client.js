@@ -1,5 +1,7 @@
 
-const apiUrl = "https://localhost:7084/api";
+import * as env from '../environments/environment'
+
+const apiUrl = env.apiUrl;
 
 let cached_match_value = JSON.parse(sessionStorage.getItem("cached_match"));
 

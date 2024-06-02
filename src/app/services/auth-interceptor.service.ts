@@ -56,8 +56,9 @@ export function authInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn):
         }),
         catchError((error: HttpErrorResponse) => {
             if (error.status === 401) {
-                let currentUrl = `${window.location.href}`;
-                router.navigateByUrl(`/login?returnUrl=${currentUrl}`);
+                toast({ message: "Not authorized. Please <a href='/login'>Sign In</a>", position: "bottom-left", duration: 3000, type: "is-danger", pauseOnHover: true, extraClasses: "is-dark" })
+                // let currentUrl = `${window.location.href}`;
+                // router.navigateByUrl(`/login?returnUrl=${currentUrl}`);
             }
             return throwError(() => error);
         }),
