@@ -1,12 +1,10 @@
 import { Injectable } from '@angular/core';
 import * as SignalR from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { Lobby } from '../models/lobby.model';
 import { IAppStore } from '../app.store';
 import { Store } from '@ngrx/store';
-import * as LobbyActions from '../store/lobbies/lobby.actions'
 import { HttpTransportType } from '@microsoft/signalr';
 import { TokenService } from './token.service';
 
@@ -20,7 +18,6 @@ export const enum HubEventType {
   ReadyToConnect = "onReadyToConnect",
   ServerFound = "onServerFound",
   MatchCanceled = "onMatchCanceled",
-  AwaitingExpired = "onAwaitingExpired",
 }
 
 @Injectable({
@@ -66,7 +63,6 @@ export class MainHubRealtimeService {
     });
 
     this._connection.on(HubEventType.DeletedLobby, (lobbyId: string) => {
-      this._store.dispatch(LobbyActions.remove({ lobbyId: lobbyId }))
       this.lobbyEvents.next({ type: HubEventType.DeletedLobby, data: lobbyId });
     });
 
@@ -88,12 +84,8 @@ export class MainHubRealtimeService {
       this.matchEvents.next({ type: HubEventType.ServerFound });
     });
 
-    this._connection.on(HubEventType.MatchCanceled, () => {
-      this.matchEvents.next({ type: HubEventType.MatchCanceled });
-    });
-
-    this._connection.on(HubEventType.AwaitingExpired, () => {
-      this.matchEvents.next({ type: HubEventType.AwaitingExpired });
+    this._connection.on(HubEventType.MatchCanceled, (reason: string) => {
+      this.matchEvents.next({ type: HubEventType.MatchCanceled, data: reason });
     });
   }
 }

@@ -4,6 +4,8 @@ var url = `${gs_endpoint}api/matches/${matchID}`;
 var hub = `${gs_endpoint}matches/${matchID}`;
 
 var boardSize = 8;
+var boardBuilt = false;
+var spectatorMode = false;
 
 function getRequestBody(request) {
     return {
@@ -27,7 +29,11 @@ const shipColors = {
 };
 
 var connection = new signalR.HubConnectionBuilder()
-    .withUrl(hub)
+    .withUrl(hub, {
+        skipNegotiation: true,
+        transport: 1,
+        accessTokenFactory: () => ticket,
+    })
     .withAutomaticReconnect(new signalR.DefaultReconnectPolicy([0, 2000, 3000, 5000, 10000, 30000]))
     .build();
 
@@ -39,6 +45,8 @@ connection.on('onOccuredError', function (message) {
 connection.on('onGameUpdated', function (e) {
     console.log(`Game updated:`);
     console.log(e);
+
+    e.eventType
 });
 
 connection.on('onGameFinished', function (e) {
@@ -51,99 +59,108 @@ connection.on('onGameCanceled', function (e) {
     console.log(e);
 });
 
-// GameMethods
+connection.on('onStateUpdated', function (e) {
+    console.log(`New state`);
+    console.log(e);
+
+    drawState(e);
+});
+
+function drawState(state) {
+
+    if (state.IsSpectatorMode != undefined && state.IsSpectatorMode == true) {
+        console.log("SPECTATOR_MODE: ON");
+        spectatorMode = true;
+    }
+
+    if (!boardBuilt) {
+
+        let player1Cells = $('#cells-1');
+        let player2Cells = $('#cells-2');
+
+        buildBoard(state.boardSize, player1Cells, false);
+        buildBoard(state.boardSize, player2Cells, !spectatorMode);
+
+        setCellsGridColumns(player1Cells);
+        setCellsGridColumns(player2Cells);
+    }
+
+    clearBoard();
+
+    if (spectatorMode) {
+
+    }
+    else {
+
+        let playerId = state.playerId;
+        let opponentId = state.opponentId;
+
+        let remainingPlayerShips = state.remainingPlayerShips;
+        let destroyedShips = state.remainingPlayerShips;
+
+        for (const [key, value] of Object.entries(remainingPlayerShips)) {
+            console.log(key, value);
+        }
+
+
+    }
+}
+
+function markCell(boardSize, ){
+    for (let shipIndex = 0; shipIndex < ships.length; shipIndex++) {
+        for (let cellIndex = 0; cellIndex < ships[shipIndex].cells.length; cellIndex++) {
+            colorizeCell(ships[shipIndex].cells[cellIndex], false, shipColors[`${ships[shipIndex].ship}`]);
+        } 
+    }
+}
+
+// DOM helpers
 function buildBoard(size, cellsContainer, isOpponentCells) {
 
     for (let i = 1; i <= size * size; i++) {
         cellsContainer.append(isOpponentCells ?
-            `<li onclick="dropBomb(${i})" id="opponent-cell-${i}">${i}</li>` :
-            `<li id="my-cell-${i}">${i}</li>`)
+            `<li onclick="dropBomb(${i})" id="player2-cell-${i}">${i}</li>` :
+            `<li id="player1-cell-${i}">${i}</li>`)
     }
+
+    boardBuilt = true;
 }
 
-function clearBoard() {
-    for (let cellIndex = 1; cellIndex <= boardSize * boardSize; cellIndex++) {
-        markCell(cellIndex, false, shipColors['none']);
-    }
-}
-
-async function dropBomb(cell) {
-
-    console.log('execution dropBomb()...');
-
-    var request = {
-        "action": 1,
-        "serializedData": `${cell}`
-    };
-
-    await fetch(`${url}/actions`, getRequestBody(request))
-        .then(async (response) => {
-            let result = await response.text();
-            console.log(`Drop bomb result: ${result}`);
-
-            if (result === "true" || result === "false") {
-                let color = result == "true" ? 'green' : 'red';
-                markCell(cell, true, color);
-            }
-        });
-}
-
-function markCell(cellId, isOpponentCell, color) {
+function colorizeCell(cellId, isOpponentCell, color) {
     let elementPattern = isOpponentCell ?
-        `#opponent-cell-${cellId}` :
-        `#my-cell-${cellId}`
+        `#player2-cell-${cellId}` :
+        `#player1-cell-${cellId}`
 
     $(elementPattern).css('background', color);
 }
 
+function clearBoard() {
+    for (let cellIndex = 1; cellIndex <= boardSize * boardSize; cellIndex++) {
+        colorizeCell(cellIndex, false, shipColors['none']);
+    }
+}
+
+// GameMethods
+async function dropBomb(cell) {
+    console.log('execution dropBomb()...');
+    connection.send("ProcessAction", 1, cell)
+}
+
 async function placeShips(ships) {
-
     console.log('execution placeShips()...');
+    connection.send("ProcessAction", 0, JSON.stringify(ships))
     console.log(JSON.stringify(ships));
-
-    var request = {
-        "action": 0,
-        "serializedData": JSON.stringify(ships)
-    };
-
-    let response = await fetch(`${url}/actions`, getRequestBody(request));
-
-    return response.ok;
 }
 
 async function getState() {
-
     console.log('execution getState()...');
-
-    let request = {
-        "action": 2,
-        "serializedData": "1"
-    }
-
-    let result = await fetch(`${url}/actions`, getRequestBody(request));
-
-    let json = await result.json();
-
-    console.log(json)
-
-    return json;
+    connection.send("ProcessAction", 2, "")
 }
 
 document.getElementById('place_ships').addEventListener('click', async (event) => {
 
     let shipsRequest = ShipsPlacementRandomizer.Create(boardSize);
-    let ships = shipsRequest.Ships;
-
-    if ((await placeShips(shipsRequest))) {
-        // if successfully placed
-        clearBoard();
-        for (let shipIndex = 0; shipIndex < ships.length; shipIndex++) {
-            for (let cellIndex = 0; cellIndex < ships[shipIndex].cells.length; cellIndex++) {
-                markCell(ships[shipIndex].cells[cellIndex], false, shipColors[`${ships[shipIndex].ship}`]);
-            }
-        }
-    }
-
+    await placeShips(shipsRequest);
     event.preventDefault();
 });
 
@@ -237,17 +254,6 @@ async function start() {
 
         await connection.start();
         console.log("Connected to Battleship server");
-
-        boardSize = (await getState()).boardSize;
-
-        let myCells = $('#cells-1');
-        let opponentCells = $('#cells-2');
-
-        buildBoard(boardSize, myCells, false);
-        buildBoard(boardSize, opponentCells, true);
-
-        setCellsGridColumns(myCells);
-        setCellsGridColumns(opponentCells);
 
     } catch (err) {
         console.log(err);

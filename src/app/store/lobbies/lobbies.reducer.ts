@@ -5,10 +5,6 @@ import { createEntityAdapter, EntityAdapter } from "@ngrx/entity";
 import { Lobby, LobbyState } from "../../models/lobby.model";
 import { produce } from "immer";
 
-export function sortByName(a: Lobby, b: Lobby): number {
-    return a.id.localeCompare(b.id);
-}
-
 export const adapter: EntityAdapter<Lobby> = createEntityAdapter<Lobby>({
     selectId: (lobby) => lobby.id,
     sortComparer: (lobbyA, lobbyB): number => lobbyA.id.localeCompare(lobbyB.id)

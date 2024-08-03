@@ -16,7 +16,7 @@ export class LobbyCreateComponent {
   @Output() onCreateLobby = new EventEmitter<CreateLobbyDto>();
 
   createLobbyModel = {
-    bet: { currencyId: 1, amount: 0 },
+    bet: { currencyId: 1, amount: 100 },
     private: false,
     gameId: ""
   };

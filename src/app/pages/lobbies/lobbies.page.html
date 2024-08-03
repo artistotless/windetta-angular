@@ -12,8 +12,10 @@
               and the game will begin.
             </h6>
           </div>
-          <app-lobby-create (onCreateLobby)="createLobby($event)"
-            [games]="[{id:'b15739de-8d5b-4759-a20c-75389b14ecb8', title:'SeaBattle'},{id:'a3c505a6-bb06-4a02-980e-5d2d2b82640c', title:'Poker'}]">Загрузка
+          <app-lobby-create (onCreateLobby)="createLobby($event)" [games]="[
+            {id:'b9d9e5fd-0079-4f45-9347-d09b005ed498', title:'TestGame'},
+            {id:'b15739de-8d5b-4759-a20c-75389b14ecb8', title:'SeaBattle'},
+            {id:'a3c505a6-bb06-4a02-980e-5d2d2b82640c', title:'Poker'}]">Загрузка
             формы</app-lobby-create>
         </section>
       </div>
@@ -25,8 +27,8 @@
   <div class="column ">
     <section class="section">
       <h1 class="title">Join the existing lobby</h1>
-      <app-lobby-list (onLeaveLobby)="leaveLobby($event)" (onJoinLobby)="joinLobby($event)" [lobbies]="(lobbies$ | async)!"
-        [currentLobby]="(currentLobby$ | async)!" />
+      <app-lobby-list (onLeaveLobby)="leaveLobby($event)" (onJoinLobby)="joinLobby($event)"
+        [lobbies]="(lobbies$ | async)!" [currentLobby]="(currentLobby$ | async)!" />
     </section>
   </div>
 </div>

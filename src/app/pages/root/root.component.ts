@@ -69,6 +69,9 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   private handleLobbyEvent(event: HubEvent) {
+
+    console.log(event);
+
     switch (event.type) {
       case HubEventType.AddedLobby:
         this._store.dispatch(LobbyActions.add(event.data))
@@ -79,11 +82,10 @@ export class AppComponent implements OnInit, OnDestroy {
       case HubEventType.UpdatedLobby:
         this._store.dispatch(LobbyActions.update(event.data))
         break;
-        case HubEventType.ReadyLobby:
-          this._store.dispatch(LobbyActions.update(event.data))
-          break;
+      case HubEventType.ReadyLobby:
+        this._store.dispatch(LobbyActions.setReady({ lobbyId: event.data }))
+        break;
       default:
-        console.log(event);
         break;
     }
   }
