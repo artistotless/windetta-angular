@@ -19,33 +19,38 @@ const _initialState: ILobbiesState = adapter.getInitialState({
 
 export const lobbyReducers = createReducer(_initialState,
     on(LobbyActions.failure, (state, action) => ({ ...state, isLoading: false, error: action.error })),
-    on(LobbyActions.getCurrentSuccess, (state, currentLobby) => ({ ...state, currentLobby: currentLobby })),
+    on(LobbyActions.setCurrent, (state, currentLobby) => ({ ...state, currentLobby: currentLobby })),
     on(LobbyActions.getCurrentFailure, (state) => ({ ...state, currentLobby: { lobbyId: "", roomIndex: -1 } })),
     on(LobbyActions.get, (state) => ({ ...state, isLoading: true })),
     on(LobbyActions.getSuccess, (state, action) => adapter.addMany(action.lobbies, { ...state, isLoading: false, isCached: true })),
     on(LobbyActions.createSuccess, (state, lobby) => adapter.addOne(lobby, state)),
     on(LobbyActions.add, (state, lobby) => adapter.addOne(lobby, state)),
-
     on(LobbyActions.update, (state, lobby) => adapter.setOne(lobby, state)),
-
     on(LobbyActions.remove, (state, action) => adapter.removeOne(action.lobbyId, state)),
+    on(LobbyActions.addMemberSuccess, (state, action) => 
+        adapter.mapOne({
+          id: action.lobbyId,
+          map: (l) => produce(l, draft => {
+            const room = draft.rooms[action.roomIndex];
+            const memberExists = room.members.some(member => member.id === action.member.id);
+            
+            if (!memberExists) {
+              room.members.push(action.member);
+            }
+          })
+        }, state)
+      ),
 
-    on(LobbyActions.addMemberSuccess, (state, action) => adapter.mapOne({
+    on(LobbyActions.changeState, (state, action) => adapter.mapOne({
         id: action.lobbyId, map: (l) => produce(l, draft => {
-            draft.rooms[action.roomIndex].members.push(action.member);
+            draft.state = action.newState
         })
     }, state)),
 
-    on(LobbyActions.setReady, (state, action) => adapter.mapOne({
-        id: action.lobbyId, map: (l) => produce(l, draft => {
-            draft.state = LobbyState.Ready
-        })
-    }, state)),
-
-    on(LobbyActions.removeMemberSuccess, (state, action) => adapter.mapOne({
+    on(LobbyActions.removeMemberSuccess, (state, action) => 
+        adapter.mapOne({
         id: action.lobbyId, map: (l) => produce(l, draft => {
             draft.rooms[action.roomIndex].members = draft.rooms[action.roomIndex].members.filter(v => v.id !== action.memberId);
         })
     }, state)),
-
 );

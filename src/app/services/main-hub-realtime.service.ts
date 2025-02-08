@@ -2,18 +2,21 @@ import { Injectable } from '@angular/core';
 import * as SignalR from '@microsoft/signalr';
 import { environment } from '../../environments/environment';
 import { Subject } from 'rxjs';
-import { Lobby } from '../models/lobby.model';
+import { Lobby, LobbyState } from '../models/lobby.model';
 import { IAppStore } from '../app.store';
 import { Store } from '@ngrx/store';
 import { HttpTransportType } from '@microsoft/signalr';
 import { TokenService } from './token.service';
+import { RoomMember } from '../models/room-member.model';
 
 export type HubEvent = { type: HubEventType, data?: any }
 
 export const enum HubEventType {
   AddedLobby = "onAddedLobby",
   DeletedLobby = "onDeletedLobby",
-  ReadyLobby = "onReadyLobby",
+  StateChangedLobby = "onStateChangedLobby",
+  AddedLobbyMember = "onAddedLobbyMember",
+  RemovedLobbyMember = "onRemovedLobbyMember",
   UpdatedLobby = "onUpdatedLobby",
   ReadyToConnect = "onReadyToConnect",
   ServerFound = "onServerFound",
@@ -66,8 +69,16 @@ export class MainHubRealtimeService {
       this.lobbyEvents.next({ type: HubEventType.DeletedLobby, data: lobbyId });
     });
 
-    this._connection.on(HubEventType.ReadyLobby, (lobbyId: string) => {
-      this.lobbyEvents.next({ type: HubEventType.ReadyLobby, data: lobbyId });
+    this._connection.on(HubEventType.StateChangedLobby, (lobbyId: string, newState: LobbyState) => {
+      this.lobbyEvents.next({ type: HubEventType.StateChangedLobby, data: {lobbyId, newState} });
+    });
+
+    this._connection.on(HubEventType.AddedLobbyMember, (lobbyId: string, roomIndex: number, member: RoomMember) => {
+      this.lobbyEvents.next({ type: HubEventType.AddedLobbyMember, data:  { lobbyId, roomIndex, member } });
+    });
+
+    this._connection.on(HubEventType.RemovedLobbyMember, (lobbyId: string, roomIndex: number, memberId: string) => {
+      this.lobbyEvents.next({ type: HubEventType.RemovedLobbyMember, data: { lobbyId, roomIndex, memberId } });
     });
 
     this._connection.on(HubEventType.UpdatedLobby, (lobby: Lobby) => {

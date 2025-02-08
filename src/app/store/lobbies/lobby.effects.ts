@@ -18,7 +18,7 @@ export const getCurrentLobbyEffect = createEffect(
             exhaustMap(() =>
                 _store.select(profile).pipe(filter(profile => profile !== undefined && profile !== null), exhaustMap(profile => {
                     return _service.getUserLobby(profile!.id).pipe(
-                        map((currentLobby) => LobbyActions.getCurrentSuccess(currentLobby)),
+                        map((currentLobby) => LobbyActions.setCurrent(currentLobby)),
                         catchError(() =>
                             of(LobbyActions.getCurrentFailure())
                         ))
@@ -51,7 +51,7 @@ export const createLobbyEffect = createEffect(
             switchMap((createDto) =>
                 _service.createLobby(createDto).pipe(
                     switchMap((lobby) => of(
-                        LobbyActions.getCurrentSuccess({
+                        LobbyActions.setCurrent({
                             lobbyId: lobby.id, roomIndex: 0
                         }),
                         LobbyActions.createSuccess(lobby),
@@ -62,7 +62,7 @@ export const createLobbyEffect = createEffect(
                     ))));
     }, { functional: true });
 
-export const addMemberEffect = createEffect(
+export const joinToLobbyEffect = createEffect(
     (
         _actions$ = inject(Actions),
         _service = inject(LobbyService),
@@ -74,7 +74,7 @@ export const addMemberEffect = createEffect(
                 _store.select(profile).pipe(filter(profile => profile !== undefined), exhaustMap(profile =>
                     _service.joinRoom(action.lobbyId, action.roomIndex).pipe(
                         switchMap(() => of(
-                            LobbyActions.getCurrentSuccess({
+                            LobbyActions.setCurrent({
                                 lobbyId: action.lobbyId, roomIndex: action.roomIndex
                             }),
                             LobbyActions.addMemberSuccess({ lobbyId: action.lobbyId, member: { id: profile!.id, name: profile!.displayName }, roomIndex: action.roomIndex }),
@@ -85,8 +85,7 @@ export const addMemberEffect = createEffect(
                 )));
     }, { functional: true });
 
-
-export const removeMemberEffect = createEffect(
+export const leaveFromLobbyEffect = createEffect(
     (
         _actions$ = inject(Actions),
         _service = inject(LobbyService),
@@ -95,10 +94,16 @@ export const removeMemberEffect = createEffect(
         return _actions$.pipe(
             ofType(LobbyActions.removeMember),
             switchMap((action) =>
-                _store.select(profile).pipe(exhaustMap(profile => _service.leaveRoom(action.lobbyId, action.roomIndex).pipe(
-                    map(() => LobbyActions.removeMemberSuccess({ lobbyId: action.lobbyId, memberId: profile!.id, roomIndex: action.roomIndex })),
-                    catchError((error: { message: string }) =>
-                        of(LobbyActions.failure({ error: error.message }))
-                    )))
+                _store.select(profile).pipe(exhaustMap(profile =>
+                    _service.leaveRoom(action.lobbyId, action.roomIndex).pipe(
+                        switchMap(() => of(
+                            LobbyActions.setCurrent({
+                                lobbyId: "", roomIndex: -1
+                            }),
+                            LobbyActions.removeMemberSuccess({ lobbyId: action.lobbyId, memberId: profile!.id, roomIndex: action.roomIndex })
+                        )),
+                        catchError((error: { message: string }) =>
+                            of(LobbyActions.failure({ error: error.message }))
+                        )))
                 )));
     }, { functional: true });

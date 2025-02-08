@@ -1,10 +1,12 @@
 
 // const apiUrl = "https://main.feed78.com/api";
 const apiUrl = "https://localhost:55001/api";
+const cardServerUrl = "https://localhost:5500/durak_cards";
 
 let cached_match_value = JSON.parse(sessionStorage.getItem("cached_match"));
 
 sessionStorage.clear();
+localStorage.setItem("cardServerUrl",cardServerUrl)
 
 let matchID = getUrlParam('match');
 

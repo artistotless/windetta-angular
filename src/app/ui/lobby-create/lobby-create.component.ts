@@ -18,7 +18,9 @@ export class LobbyCreateComponent {
   createLobbyModel = {
     bet: { currencyId: 1, amount: 100 },
     private: false,
-    gameId: ""
+    gameId: "",
+    slots: 1,
+    teams: 2
   };
 
   public onCreateLobbyClick() {
@@ -28,7 +30,9 @@ export class LobbyCreateComponent {
         currencyId: this.createLobbyModel.bet.currencyId
       },
       gameId: this.createLobbyModel.gameId,
-      private: this.createLobbyModel.private
+      private: this.createLobbyModel.private,
+      slots: this.createLobbyModel.slots,
+      teams: this.createLobbyModel.teams
     });
   }
 

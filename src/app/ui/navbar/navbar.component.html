@@ -27,7 +27,7 @@
                         class="button">
                         Log in
                     </a>
-                    <a *ngIf="isAuthenticated" [routerLink]="['logout']" [queryParams]="{returnUrl:currentUrl}"
+                    <a *ngIf="isAuthenticated" [routerLink]="['logout']" [queryParams]="{returnUrl:'/'}"
                         class="button">
                         Log out
                     </a>

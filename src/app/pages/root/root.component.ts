@@ -82,8 +82,14 @@ export class AppComponent implements OnInit, OnDestroy {
       case HubEventType.UpdatedLobby:
         this._store.dispatch(LobbyActions.update(event.data))
         break;
-      case HubEventType.ReadyLobby:
-        this._store.dispatch(LobbyActions.setReady({ lobbyId: event.data }))
+      case HubEventType.StateChangedLobby:
+        this._store.dispatch(LobbyActions.changeState(event.data))
+        break;
+      case HubEventType.AddedLobbyMember:
+        this._store.dispatch(LobbyActions.addMemberSuccess(event.data))
+        break;
+      case HubEventType.RemovedLobbyMember:
+        this._store.dispatch(LobbyActions.removeMemberSuccess(event.data))
         break;
       default:
         break;

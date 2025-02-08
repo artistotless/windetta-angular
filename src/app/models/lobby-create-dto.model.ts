@@ -8,4 +8,6 @@ export class CreateLobbyDto {
     autoReadyStrategy?: any;
     autoDisposeStrategy?: any;
     joinFilters?: any[];
+    slots: number = 0;
+    teams: number = 0;
 }
