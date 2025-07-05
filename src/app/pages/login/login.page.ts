@@ -17,6 +17,6 @@ export class LoginPage implements OnInit {
 
   ngOnInit(): void {
     let returnUrl = this._route.snapshot.queryParams["returnUrl"];
-    window.location.href = `${environment.mvcUrl}/login?returnUrl=${returnUrl}`
+    window.location.href = `${environment.proxyUrl}/login?returnUrl=${returnUrl}`
   }
 }

@@ -4,7 +4,7 @@
   "scripts": {
     "clear_build": "ng build --configuration production --output-hashing none --output-path C:\\Projects\\windetta-mvc\\src\\wwwroot\\angular",
     "ng": "ng",
-    "start": "ng serve --configuration development --ssl false --port 4200",
+    "start": "ng serve --configuration development --ssl false --port 57004",
     "build": "ng build",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",

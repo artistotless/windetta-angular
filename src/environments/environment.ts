@@ -3,7 +3,7 @@ import { Lobby, LobbyState } from "../app/models/lobby.model";
 export const environment = {
     production: true,
     apiUrl: "https://spa-proxy.feed78.com/api",
-    mvcUrl: "https://spa-proxy.feed78.com",
+    proxyUrl: "https://spa-proxy.feed78.com",
     mainHubUrl: "https://main.feed78.com/mainHub",
 
     enableHttpToasts: false,

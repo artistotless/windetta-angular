@@ -13,6 +13,6 @@ export class IdentityService {
   }
 
   authenticate(): Observable<IProfile> {
-    return this._client.get<IProfile>(`${environment.mvcUrl}/profile`);
+    return this._client.get<IProfile>(`${environment.proxyUrl}/profile`);
   }
 }

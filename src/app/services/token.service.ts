@@ -11,7 +11,7 @@ export class TokenService {
   constructor(private _client: HttpClient) { }
 
   public getRealtimeToken(): Observable<string> {
-    return this._client.get<string>(`${environment.mvcUrl}/tokens/realtime`);
+    return this._client.get<string>(`${environment.proxyUrl}/tokens/realtime`);
   }
 
   public getRealtimeTokenPromise(): Promise<string> {
@@ -19,7 +19,7 @@ export class TokenService {
 
     return <Promise<string>>new Promise(function (resolve, reject) {
 
-      client.get<string>(`${environment.mvcUrl}/tokens/realtime`).subscribe(
+      client.get<string>(`${environment.proxyUrl}/tokens/realtime`).subscribe(
         result => resolve(result),
         error => reject(error),
       );
