@@ -32,7 +32,7 @@ function getUrlParam(key) {
 
 async function fetchSessionToken() {
     try {
-        const response = await fetch(`${gs_endpoint}/api/sessionToken`, {
+        const response = await fetch(`${gs_endpoint}api/sessionToken`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
