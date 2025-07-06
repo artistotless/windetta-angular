@@ -4,4 +4,5 @@ export interface IProfile {
     displayName: string;
     username: string;
     email: string;
+    imageUrl: string;
 }

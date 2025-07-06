@@ -1,6 +1,4 @@
-
-// const apiUrl = "https://main.feed78.com/api";
-const apiUrl = "https://localhost:55001/api";
+const apiUrl = "/proxy/main/api";
 
 let cached_match_value = JSON.parse(sessionStorage.getItem("cached_match"));
 
@@ -25,11 +23,43 @@ window.gameData = {
     matchID: matchID,
     gameID: gameID,
     gs_endpoint: gs_endpoint,
-    ticket: ticket,
+    sessionToken: null,
 };
 
 function getUrlParam(key) {
     return new URLSearchParams(window.location.search).get(key);
+}
+
+async function fetchSessionToken() {
+    try {
+        const response = await fetch(`${gs_endpoint}/api/sessionToken`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${ticket}`
+            },
+            body: JSON.stringify({
+                MatchId: matchID
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const sessionToken = data.token;
+        
+        // Сохраняем sessionToken в window.gameData
+        window.gameData.sessionToken = sessionToken;
+        
+        console.log("sessionToken obtained:", sessionToken);
+        return sessionToken;
+    } catch (error) {
+        console.error('Error fetching session token:', error);
+        alert('Error: Cannot obtain session token from game server.');
+        return null;
+    }
 }
 
 async function fetchGameUI(gameId) {
@@ -88,4 +118,7 @@ if (gameID === undefined || gameID === null)
 if (matchID === undefined || matchID === null)
     alert('Error: Cannot connect to the server. Invalid match identifier')
 
-fetchGameUI(gameID);
+// Получаем sessionToken перед загрузкой UI
+fetchSessionToken().then(() => {
+    fetchGameUI(gameID);
+});

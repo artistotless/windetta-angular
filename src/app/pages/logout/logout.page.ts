@@ -18,6 +18,6 @@ export class LogoutPage implements OnInit {
   ngOnInit(): void {
     let returnUrl = this._route.snapshot.queryParams["returnUrl"];
     console.log("Successfully loged out");
-    window.location.href = `${environment.proxyUrl}/logout?returnUrl=${returnUrl}`
+    window.location.href = `/logout?returnUrl=${returnUrl}`
   }
 }

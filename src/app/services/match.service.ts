@@ -12,14 +12,14 @@ export class MatchService {
   constructor(private _client: HttpClient) { }
 
   getOngoingMatchesIds(): Observable<Array<string>> {
-    return this._client.get<Array<string>>(`${environment.apiUrl}/matches/ongoing`)
+    return this._client.get<Array<string>>(`${environment.mainApiUrl}/matches/ongoing`)
   }
 
   getOngoingMatchIdForUser(userId: string): Observable<string> {
-    return this._client.get<string>(`${environment.apiUrl}/players/${userId}/matches/ongoing`)
+    return this._client.get<string>(`${environment.mainApiUrl}/players/${userId}/matches/ongoing`)
   }
 
   getOngoingMatchInfo(matchId: string): Observable<OngoingMatch> {
-    return this._client.get<OngoingMatch>(`${environment.apiUrl}/matches/ongoing/${matchId}`)
+    return this._client.get<OngoingMatch>(`${environment.mainApiUrl}/matches/ongoing/${matchId}`)
   }
 }

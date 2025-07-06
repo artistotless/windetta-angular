@@ -14,23 +14,23 @@ export class LobbyService {
   constructor(private _client: HttpClient) { }
 
   getUserLobby(userId: string): Observable<UserLobbyMapEntry> {
-    return this._client.get<UserLobbyMapEntry>(`${environment.apiUrl}/users/${userId}/lobby`)
+    return this._client.get<UserLobbyMapEntry>(`${environment.mainApiUrl}/users/${userId}/lobby`)
   }
 
   getLobbies(): Observable<Array<Lobby>> {
-    return this._client.get<Array<Lobby>>(`${environment.apiUrl}/lobbies`)
+    return this._client.get<Array<Lobby>>(`${environment.mainApiUrl}/lobbies`)
   }
 
   createLobby(data: CreateLobbyDto): Observable<Lobby> {
-    return this._client.post<Lobby>(`${environment.apiUrl}/lobbies`, data)
+    return this._client.post<Lobby>(`${environment.mainApiUrl}/lobbies`, data)
   }
 
   joinRoom(lobbyId: string, roomIndex: number): Observable<any> {
-    return this._client.post(`${environment.apiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`, null)
+    return this._client.post(`${environment.mainApiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`, null)
   }
 
   leaveRoom(lobbyId: string, roomIndex: number): Observable<any> {
     console.log("LOBBYSERVICE leaveRoom")
-    return this._client.delete(`${environment.apiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`)
+    return this._client.delete(`${environment.mainApiUrl}/lobbies/${lobbyId}/rooms/${roomIndex}`)
   }
 }
