@@ -10,6 +10,12 @@ if (cached_match_value === null || cached_match_value === undefined)
 
 let gameID = getUrlParam('game');
 let gs_endpoint = cached_match_value.gs_endpoint;
+
+// Обрезаем слэш в конце gs_endpoint, если он есть
+if (gs_endpoint.endsWith('/')) {
+    gs_endpoint = gs_endpoint.slice(0, -1);
+}
+
 let ticket = cached_match_value.ticket;
 
 console.log("cached_match_value", cached_match_value);
@@ -32,7 +38,7 @@ function getUrlParam(key) {
 
 async function fetchSessionToken() {
     try {
-        const response = await fetch(`${gs_endpoint}api/sessionToken`, {
+        const response = await fetch(`${gs_endpoint}/api/sessionToken`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
