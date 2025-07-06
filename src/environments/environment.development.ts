@@ -3,6 +3,6 @@ export const environment = {
     // В режиме разработки используем относительные пути - SPA proxy перенаправит на backend
     mainApiUrl: "/proxy/main/api",
     identityApiUrl: "/proxy/identity/api",
-    mainHubUrl: "https://localhost:55001/mainHub", // SignalR Hub остается прямым подключением
+    mainHubUrl: "http://localhost:56001/mainHub", // SignalR Hub остается прямым подключением
     enableHttpToasts: false
 };

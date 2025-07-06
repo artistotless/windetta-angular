@@ -4,7 +4,7 @@ export const environment = {
     production: true,
     mainApiUrl: "/proxy/main/api",
     identityApiUrl: "/proxy/identity/api",
-    mainHubUrl: "https://main.feed78.com/mainHub",
+    mainHubUrl: "http://main.feed78.com/mainHub",
 
     enableHttpToasts: false,
     testLobbies: [
