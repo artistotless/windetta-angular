@@ -30,6 +30,7 @@ window.gameData = {
     gameID: gameID,
     gs_endpoint: gs_endpoint,
     sessionToken: null,
+    gameResourcesBaseUrl: null,
 };
 
 function getUrlParam(key) {
@@ -38,7 +39,7 @@ function getUrlParam(key) {
 
 async function fetchSessionToken() {
     try {
-        const response = await fetch(`${gs_endpoint}/api/sessionToken`, {
+        const response = await fetch(`${gs_endpoint}/api/sessionTokens`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -81,6 +82,10 @@ async function fetchGameUI(gameId) {
             alert('Error: Cannot connect to the server.')
 
         var content = (await response.json()).data;
+        // Save the base URL for game assets to the window object
+        window.gameData.resourcesBaseUrl = content.resourcesBaseUrl;
+        console.log('Game resources base URL set to:', window.gameData.resourcesBaseUrl);
+
         await setView(content);
     });
 }
