@@ -16,6 +16,7 @@ import { JoinLobbyDto } from '../../models/lobby-join.dto.models';
 export class LobbyItemComponent {
   @Input() info!: Lobby;
   @Input() isJoined!: boolean;
+  @Input() currentRoomIndex: number = 0;
   @Output() onJoinClick = new EventEmitter<JoinLobbyDto>();
   @Output() onLeaveClick = new EventEmitter<LeaveLobbyDto>();
 }

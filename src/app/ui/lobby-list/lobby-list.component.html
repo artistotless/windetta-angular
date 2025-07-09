@@ -7,7 +7,9 @@
     @for (item of lobbies; track $index) {
     <div class="block">
         <app-lobby-item (onJoinClick)="onJoinClick($event)" (onLeaveClick)="onLeaveClick($event)"
-            [isJoined]="currentLobby.lobbyId === item.id" [info]="item" />
+            [isJoined]="currentLobby.lobbyId === item.id" 
+            [currentRoomIndex]="currentLobby.lobbyId === item.id ? currentLobby.roomIndex : 0"
+            [info]="item" />
     </div>
     }
 </ul>

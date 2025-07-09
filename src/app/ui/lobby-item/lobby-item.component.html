@@ -63,7 +63,7 @@
         <label class="label ">JoinFilters</label>
         <textarea class="textarea" placeholder="...">{{info.joinFilters | json}}</textarea>
     </div> -->
-    <button #leave *ngIf="isJoined" (click)="onLeaveClick.emit({lobbyId:info.id, roomIndex:0})"
+    <button #leave *ngIf="isJoined" (click)="onLeaveClick.emit({lobbyId:info.id, roomIndex:currentRoomIndex})"
         (click)="leave.classList.toggle('is-loading')" type="button" class="button is-fullwidth">
         Leave
     </button>
