@@ -1,4 +1,4 @@
 export class FundsInfo {
-    currencyId!: number;
+    currencyCode!: string;
     amount!: number;
 }
